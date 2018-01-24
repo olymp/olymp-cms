@@ -7,14 +7,14 @@ import {
 } from 'olymp-router';
 import withUA from 'olymp-utils/user-agent';
 import EditableRoute from 'olymp-pages/editable';
-import withLocale from 'olymp-fela/antd/de';
+import withLocale from 'olymp-ui/antd/de';
 import PageRoute from 'olymp-pages/route';
 import { Route as CloudinaryRoute, Lightbox } from 'olymp-cloudinary';
 import CollectionRoute from 'olymp-collection/view';
 import { withCollections } from 'olymp-collection';
-import { createComponent, TopLoader, Modal } from 'olymp-fela';
-import { getAntStyle } from 'olymp-fela/antd';
-import { Hotjar } from 'olymp-ui';
+import { createComponent, TopLoader, Modal } from 'olymp-ui';
+import { getAntStyle } from 'olymp-ui/antd';
+// import { Hotjar } from 'olymp-ui';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import Analytics from 'olymp-google/analytics';

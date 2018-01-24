@@ -13,6 +13,12 @@ const TOKEN_ISSUER = `https://${process.env.AUTH0_DOMAIN}/`;
 const JWKS_URI = `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`;
 const MANAGEMENT_SCOPES = 'read:users';
 
+const access = [
+  {
+    '*': 'read',
+    '#news.gzk': 'crwd'
+  }
+];
 let auth0;
 const getManagementClient = () => {
   if (!auth0) {

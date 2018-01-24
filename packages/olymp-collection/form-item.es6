@@ -1,5 +1,5 @@
 import React from 'react';
-import Form, { defaultLayout } from 'olymp-ui/form';
+import Form, { layout } from 'olymp-antd/form';
 import { createComponent } from 'react-fela';
 import { get } from 'lodash';
 
@@ -20,7 +20,7 @@ export default ({ children, field, ...props }) => {
 
   return (
     <Div>
-      <Form.Item {...defaultLayout} {...props} label={label}>
+      <Form.Item {...layout} {...props} label={label}>
         {children}
       </Form.Item>
     </Div>

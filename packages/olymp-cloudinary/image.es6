@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Image } from 'olymp-fela';
+import { Image } from 'olymp-ui';
 import { withHandlers } from 'recompose';
 
 // https://github.com/cloudinary/cloudinary-react

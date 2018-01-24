@@ -6,7 +6,6 @@ const icon = ({ color, width, height, size, id, ...rest }) => (
   <svg
     width={size || width}
     height={size || height}
-    xy={console.log(color)}
     {...rest}
     viewBox="0 0 1000 1000"
   >

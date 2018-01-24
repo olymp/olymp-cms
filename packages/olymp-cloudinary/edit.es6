@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal } from 'olymp-fela';
+import { Modal } from 'olymp-ui';
 import { withState, withPropsOnChange, compose } from 'recompose';
 import { isEmpty } from 'lodash';
 import Mediathek from './views';

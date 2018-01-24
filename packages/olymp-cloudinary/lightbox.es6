@@ -12,15 +12,15 @@ const LightBox = asyncComponent({
       require.ensure(
         [],
         require => {
-          resolve(require('olymp-fela/lightbox'));
+          // resolve(require('olymp-lightbox'));
         },
-        'lightbox',
-      ),
-    ),
+        'lightbox'
+      )
+    )
 });
 
 @getContext({
-  gallery: PropTypes.string,
+  gallery: PropTypes.string
 })
 @connect(
   ({ location, lightbox }, { gallery }) => {
@@ -35,12 +35,12 @@ const LightBox = asyncComponent({
       prev,
       next,
       index,
-      image: index >= 0 ? images[index] : null,
+      image: index >= 0 ? images[index] : null
     };
   },
   dispatch => ({
-    updateQuery: createUpdateQuery(dispatch),
-  }),
+    updateQuery: createUpdateQuery(dispatch)
+  })
 )
 export default class Lightbox extends Component {
   render() {

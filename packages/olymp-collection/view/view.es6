@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { withSearch } from 'olymp-utils';
-import { withRouter } from 'olymp-router';
-import { Sidebar, Drawer } from 'olymp-fela';
-import Menu, {StackedMenu} from 'olymp-fela/menu';
+import { Drawer } from 'olymp-ui';
+import { SecondarySidebar } from 'olymp-ui/menu/trio';
+import Menu, { StackedMenu } from 'olymp-ui/menu';
 import { createComponent } from 'react-fela';
 import {
   FaDatabase,
@@ -11,16 +10,15 @@ import {
   FaClockO,
   FaPlus,
   FaAngleRight,
-  FaChevronLeft,
+  FaChevronLeft
 } from 'olymp-icons';
 import { Image } from 'olymp-cloudinary';
 import { get } from 'lodash';
 import { Icon } from 'antd';
 import { compose, withPropsOnChange, withState } from 'recompose';
 import isAfter from 'date-fns/isAfter';
-import { getPrintableValue } from '../utils';
-import withItems from '../with-items';
-import withCollection from '../with-collection';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import Calendar from './calendar';
 import Table from './table';
 import Detail from './detail';
@@ -31,14 +29,14 @@ const FlexContainer = createComponent(
     hasFlex: {
       display: 'flex',
       flex: '1 1 0%',
-      flexDirection: 'column',
+      flexDirection: 'column'
     },
     '> .rbc-calendar': {
-      padding: theme.space3,
+      padding: theme.space3
     },
     '> div': {
       hasFlex: {
-        flex: '1 1 0%',
+        flex: '1 1 0%'
       },
       height: 'auto !important',
       overflow: 'auto',
@@ -46,62 +44,94 @@ const FlexContainer = createComponent(
         '> .rbc-toolbar-label': {
           color: theme.color,
           fontWeight: 200,
-          fontSize: '200%',
-        },
-      },
-    },
+          fontSize: '200%'
+        }
+      }
+    }
   }),
-  'div',
+  'div'
 );
 
 const enhance = compose(
-  withRouter,
-  withSearch('search'),
-  withCollection,
-  withItems,
   withState('keys', 'setKeys', []),
-  withPropsOnChange(['collection', 'items'], ({ collection, items = [] }) => {
-    const startField = get(collection, 'specialFields.startField');
-    const endField = get(collection, 'specialFields.endField');
-
+  graphql(
+    gql`
+      query documentList($type: String, $app: String) {
+        documentList(type: $type, app: $app) {
+          id
+          parentId
+          state
+          name
+          image
+          color
+        }
+      }
+    `,
+    {
+      options: ({ typeName, app }) => ({
+        variables: {
+          type: typeName,
+          app
+        }
+      }),
+      props: ({ ownProps, data }) => ({
+        ...ownProps,
+        loading: data.loading,
+        items: data.documentList || []
+      })
+    }
+  ),
+  withPropsOnChange(['items'], ({ items = [] }) => {
+    const startField = null;
+    const endField = null;
     return {
-      items:
-        startField || startField
-          ? items.map(item => ({
-              ...item,
-              state:
-                item.state === 'PUBLISHED' &&
-                !isAfter(item[endField || startField], new Date())
-                  ? 'EXPIRED'
-                  : 'PUBLISHED',
-            }))
-          : items,
+      collection: {
+        specialFields: {},
+        fields: [
+          {
+            name: 'name',
+            specialFields: {},
+            innerType: {
+              specialFields: {},
+              kind: 'SCALAR',
+              name: 'String'
+            },
+            type: {
+              specialFields: {},
+              kind: 'SCALAR',
+              name: 'String'
+            }
+          }
+        ]
+      },
+      items: startField
+        ? items.map(item => ({
+            ...item,
+            state:
+              item.state === 'PUBLISHED' &&
+              !isAfter(item[endField || startField], new Date())
+                ? 'EXPIRED'
+                : 'PUBLISHED'
+          }))
+        : items
     };
   }),
   withPropsOnChange(
-    ['collection', 'items', 'typeName', 'id', 'keys'],
-    ({ collection, items = [], updateQuery, typeName, id, sortBy, keys }) => ({
+    ['items', 'typeName', 'id', 'keys'],
+    ({ items = [], onClick, id, keys }) => ({
       menuItems: items
         .filter(x => x.state === (keys[0] || 'PUBLISHED'))
         .map(item => ({
           key: item.id,
-          image: item[collection.specialFields.imageField],
-          description: getPrintableValue(
-            item[sortBy || collection.specialFields.descriptionField],
-            collection.fields.find(
-              field =>
-                field.name ===
-                (sortBy || collection.specialFields.descriptionField),
-            ),
-          ),
-          color: item[collection.specialFields.colorField],
+          image: item.image,
+          description: item.description,
+          color: item.color,
           active: item.id === id,
-          label: item[collection.specialFields.nameField] || 'Kein Titel',
-          onClick: () =>
-            updateQuery({ [`@${typeName.toLowerCase()}`]: item.id }),
-        })),
-    }),
-  ),
+          label: item.name,
+          onClick: () => onClick(item.id)
+        }))
+    })
+  )
 );
 
 @enhance
@@ -113,7 +143,7 @@ export default class CollectionView extends Component {
       typeName,
       updateQuery,
       keys,
-      setKeys,
+      setKeys
     } = this.props;
     const startField = get(collection, 'specialFields.startField');
 
@@ -194,7 +224,7 @@ export default class CollectionView extends Component {
               {color ? <span style={{ color }}>{label}</span> : label}
               {!!description && <small>{description}</small>}
             </Menu.Item>
-          ),
+          )
         )}
       </Menu>
     );
@@ -210,14 +240,14 @@ export default class CollectionView extends Component {
       isLoading,
       keys,
       items,
-      replaceQuery,
+      onClick
     } = this.props;
     const nameField = get(collection, 'specialFields.nameField', 'name');
     const startField = get(collection, 'specialFields.startField');
 
     return (
-      <Sidebar
-        flex
+      <SecondarySidebar
+        width={240}
         menu={
           <StackedMenu
             isLoading={isLoading}
@@ -237,16 +267,7 @@ export default class CollectionView extends Component {
           )}
         </FlexContainer>
 
-        <Drawer
-          open={!!id}
-          width={475}
-          right
-          onClose={() =>
-            replaceQuery({
-              [`@${typeName.toLowerCase()}`]: null,
-            })
-          }
-        >
+        <Drawer open={!!id} width={475} right onClose={() => onClick()}>
           <Menu
             header={
               id === 'new' ? (
@@ -274,7 +295,7 @@ export default class CollectionView extends Component {
             />
           </Menu>
         </Drawer>
-      </Sidebar>
+      </SecondarySidebar>
     );
   }
 }

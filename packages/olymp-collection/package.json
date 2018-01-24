@@ -15,6 +15,11 @@
   "dependencies": {
     "date-fns": "^2.0.0-alpha.1",
     "deep-diff": "^0.3.8",
+    "olymp-antd": "^20.1.23",
+    "olymp-cloudinary": "^20.1.22-0",
+    "olymp-google": "^20.1.22-0",
+    "olymp-slate": "^20.1.22-0",
+    "olymp-ui": "^20.1.23",
     "prop-types": "^15.5.10",
     "react-big-calendar": "^0.17.0",
     "shortid": "^2.2.8",

@@ -3,7 +3,7 @@ import PageRoute from 'olymp-pages/route';
 import { getAuth } from 'olymp-auth';
 import { Lightbox } from 'olymp-cloudinary';
 import { lifecycle, compose } from 'recompose';
-import { TopLoader } from 'olymp-fela';
+import { TopLoader } from 'olymp-ui';
 import { connect } from 'react-redux';
 import { message } from 'antd';
 import PrefetchRoutes from './prefetch-routes';

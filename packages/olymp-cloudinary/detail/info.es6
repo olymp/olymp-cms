@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input } from 'antd';
-import Menu from 'olymp-fela/menu';
+import Menu from 'olymp-ui/menu';
 import { format } from 'date-fns';
 
 const FormForFullLayout = {

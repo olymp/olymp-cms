@@ -1,5 +1,5 @@
 import React from 'react';
-import Portal from 'olymp-fela/portal';
+import Portal from 'olymp-ui/portal';
 import { Menu, Tooltip } from 'antd';
 import { createComponent } from 'react-fela';
 import { withPropsOnChange } from 'recompose';
@@ -10,23 +10,23 @@ export const Button = createComponent(
     '> svg': {
       fill: active ? theme.light : theme.light2,
       size: 16,
-      marginBottom: -4,
+      marginBottom: -4
     },
     '> div > svg': {
       fill: active ? theme.light : theme.light2,
       size: 16,
-      marginBottom: -4,
+      marginBottom: -4
     },
     '> div> div > svg': {
       fill: active ? theme.light : theme.light2,
       size: 16,
-      marginBottom: -4,
+      marginBottom: -4
     },
     '> a > svg': {
       fill: active ? theme.light : theme.light2,
       size: 16,
-      marginBottom: -4,
-    },
+      marginBottom: -4
+    }
   }),
   ({ onMouseDown, tooltip, children, className }) => (
     <div onMouseDown={onMouseDown} className={className}>
@@ -35,7 +35,7 @@ export const Button = createComponent(
       </Tooltip>
     </div>
   ),
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const WrappedMenu = createComponent(
@@ -53,7 +53,7 @@ const WrappedMenu = createComponent(
     borderBottom: 0,
     hasFlex: {
       justifyContent: 'center',
-      display: 'flex',
+      display: 'flex'
     },
     '> li': {
       padding: 0,
@@ -62,13 +62,13 @@ const WrappedMenu = createComponent(
         lineHeight: '25px',
         '> div': {
           paddingX: 5,
-          lineHeight: '25px',
-        },
-      },
-    },
+          lineHeight: '25px'
+        }
+      }
+    }
   }),
   props => <Menu {...props} />,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const enhance = withPropsOnChange(['parentEl'], ({ parentEl }) => {
@@ -85,7 +85,7 @@ const enhance = withPropsOnChange(['parentEl'], ({ parentEl }) => {
   const left = scrollX + tooltipPosition.left;
   return {
     left: left + parent.offsetWidth / 2,
-    top,
+    top
   };
 });
 const ScrollPortal = enhance(({ children, top, left, color, display }) => (
@@ -98,7 +98,7 @@ const ScrollPortal = enhance(({ children, top, left, color, display }) => (
         left,
         // transform: 'translate3d(-50%, -100%, 0px)',
         transform: `translate3d(-50%, ${top - 26}px, 0px)`,
-        position: 'absolute',
+        position: 'absolute'
       }}
       selectedKeys={[]}
       mode="horizontal"

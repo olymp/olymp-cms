@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'olymp-router';
-import { Nav } from 'olymp-fela';
+import { Nav } from 'olymp-ui';
 import PrefetchLink from './prefetch-link';
 
 const toggleComponent = ({ toggled, onToggle, ...props }) => (

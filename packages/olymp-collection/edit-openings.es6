@@ -1,9 +1,8 @@
 import React from 'react';
 import { toClass, compose, withState } from 'recompose';
-import { Modal } from 'olymp-fela';
+import { Modal } from 'olymp-ui';
 import { createComponent } from 'react-fela';
-import { TimeRangesEditor } from 'olymp-ui';
-import { Button } from 'antd';
+import { Input, Button } from 'antd';
 import FormItem from './form-item';
 
 const Footer = createComponent(
@@ -46,7 +45,7 @@ export default {
           open={isOpen}
           onClose={() => setOpen(false)}
         >
-          <TimeRangesEditor style={{ padding: 20 }} {...p} />
+          <Input style={{ padding: 20 }} {...p} />
         </Modal>
       </FormItem>
     )

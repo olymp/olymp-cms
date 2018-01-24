@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose, withPropsOnChange, withContext } from 'recompose';
-import Portal from 'olymp-fela/portal';
+import Portal from 'olymp-ui/portal';
 import { createComponent } from 'react-fela';
 import { connect } from 'react-redux';
 import Page from 'olymp-pages/reader';

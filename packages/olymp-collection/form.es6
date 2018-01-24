@@ -1,13 +1,12 @@
 import React from 'react';
-import Form from 'olymp-ui/form';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
-import { Container, Sidebar } from 'olymp-fela';
-import Menu from 'olymp-fela/menu';
-import AntMenu from 'olymp-fela/menu/ant';
+import { Container, Sidebar } from 'olymp-ui';
+import Menu from 'olymp-ui/menu';
+import AntMenu from 'olymp-ui/menu/ant';
 import { withRouter, Prompt } from 'olymp-router';
 import { FaPencil, FaTrashO, FaSave, FaTimes } from 'olymp-icons';
 import { get } from 'lodash';
-import { Popconfirm } from 'antd';
+import { Form, Popconfirm } from 'antd';
 import DefaultEdits from './default-edits';
 import { getValidationRules, getInitialValue, getFormSchema } from './utils';
 
@@ -33,7 +32,7 @@ const Items = ({ schema, form, item, value, ...rest }) =>
         item={item}
         rule={rule}
         key={field.name}
-      />,
+      />
     );
   });
 
@@ -68,21 +67,21 @@ const enhance = compose(
             getFieldDecorator(field.name, {
               rules: getValidationRules(field),
               // valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value',
-              initialValue: query[field.name] || getInitialValue(props, field),
-            }),
+              initialValue: query[field.name] || getInitialValue(props, field)
+            })
         };
       });
       return {
         schemaWithEdits,
-        schema,
+        schema
       };
-    },
+    }
   ),
   withState('collapsed', 'setCollapsed', true),
   withHandlers({
     expand: ({ setCollapsed }) => () => setCollapsed(false),
-    collapse: ({ setCollapsed }) => () => setCollapsed(true),
-  }),
+    collapse: ({ setCollapsed }) => () => setCollapsed(true)
+  })
 );
 
 const FormComponent = enhance(
@@ -155,7 +154,7 @@ const FormComponent = enhance(
         )}
       </Container>
     </Sidebar>
-  ),
+  )
 );
 FormComponent.displayName = 'FormComponent';
 export default FormComponent;

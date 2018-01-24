@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { withPropsOnChange, withState } from 'recompose';
 import { Upload } from 'antd';
 import { createComponent } from 'react-fela';
-import { Sidebar, Drawer } from 'olymp-fela';
-import Menu, { StackedMenu } from 'olymp-fela/menu';
-import AntMenu from 'olymp-fela/menu/ant';
+import { Sidebar, Drawer } from 'olymp-ui';
+import Menu, { StackedMenu } from 'olymp-ui/menu';
+import AntMenu from 'olymp-ui/menu/ant';
 import {
   FaChevronLeft,
   FaPictureO,

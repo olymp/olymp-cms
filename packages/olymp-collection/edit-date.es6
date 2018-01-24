@@ -1,6 +1,6 @@
 import React from 'react';
 import { toClass } from 'recompose';
-import { DateEditor } from 'olymp-ui';
+import { Input } from 'antd';
 import FormItem from './form-item';
 
 export default {
@@ -8,7 +8,7 @@ export default {
     innerType.name === 'Date' || innerType.name === 'DateTime',
   form: toClass(({ innerType, ...props }) => (
     <FormItem {...props}>
-      <DateEditor
+      <Input
         {...props}
         format={
           innerType.name === 'DateTime' ? 'DD.MM.YYYY HH:mm' : 'DD.MM.YYYY'
@@ -16,5 +16,5 @@ export default {
         showTime={innerType.name === 'DateTime' ? { format: 'HH:mm' } : null}
       />
     </FormItem>
-  )),
+  ))
 };

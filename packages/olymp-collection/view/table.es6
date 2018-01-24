@@ -10,11 +10,11 @@ const StyledTable = createComponent(
   () => ({
     '& td': {
       minWidth: 50,
-      maxWidth: 200,
-    },
+      maxWidth: 200
+    }
   }),
   p => <Table {...p} />,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const sortValue = (item, collection) => {
@@ -65,7 +65,7 @@ const getFilters = (items, field) => {
     return uniq(arr)
       .map(x => ({
         text: getPrintableValue(x, field),
-        value: x,
+        value: x
       }))
       .filter(x => x.value);
   }
@@ -84,7 +84,7 @@ const enhance = compose(
       filter,
       setFilter,
       activeFilter,
-      setActiveFilter,
+      setActiveFilter
     }) => ({
       columns: collection.fields
         .filter(
@@ -98,7 +98,7 @@ const enhance = compose(
             x.name ===
               (collection.specialFields.imageField || 'image' || 'bild') ||
             x.name ===
-              (collection.specialFields.colorField || 'color' || 'farbe'),
+              (collection.specialFields.colorField || 'color' || 'farbe')
         )
         .sort((a, b) => sortValue(b, collection) - sortValue(a, collection))
         .map(field => ({
@@ -121,9 +121,9 @@ const enhance = compose(
           onFilterDropdownVisibleChange: visible =>
             setActiveFilter(visible && field.name),
           onFilter: (value, item) => item[field.name] === value,
-          render: value => getPrintableValue(value, field),
-        })),
-    }),
+          render: value => getPrintableValue(value, field)
+        }))
+    })
   ),
   withPropsOnChange(['items', 'filter'], ({ items, filter }) => ({
     data: items
@@ -132,28 +132,26 @@ const enhance = compose(
           (acc, key) =>
             acc &&
             item[key].toLowerCase().indexOf(filter[key].toLowerCase()) !== -1,
-          true,
-        ),
+          true
+        )
       )
       .map((item, i) => ({
         key: i,
-        ...item,
-      })),
-  })),
+        ...item
+      }))
+  }))
 );
 
 @enhance
 export default class CollectionView extends Component {
   render() {
-    const { columns, data, typeName, updateQuery } = this.props;
+    const { columns, data, onClick } = this.props;
 
     return (
       <StyledTable
         columns={columns}
         dataSource={data}
-        onRowClick={item =>
-          updateQuery({ [`@${typeName.toLowerCase()}`]: item.id })
-        }
+        onRowClick={item => onClick(item.id)}
       />
     );
   }

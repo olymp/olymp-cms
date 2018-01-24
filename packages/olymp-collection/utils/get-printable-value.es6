@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image } from 'olymp-cloudinary';
-import { Modal } from 'olymp-fela';
+import { Modal } from 'olymp-ui';
 import { Checkbox, Button } from 'antd';
 import { compose, withState } from 'recompose';
 import { Value } from 'slate';
@@ -83,8 +83,8 @@ export default (value, field) => {
           Plain.serialize(
             Value.fromJSON({
               document: value,
-              kind: 'value',
-            }),
+              kind: 'value'
+            })
           );
         return value && text ? <Slate>{text}</Slate> : <i>Kein Inhalt</i>;
 

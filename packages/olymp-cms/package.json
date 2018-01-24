@@ -22,7 +22,7 @@
     "olymp-auth": "^20.0.10",
     "olymp-cloudinary": "^20.1.22-0",
     "olymp-collection": "^20.1.22-0",
-    "olymp-fela": "^20.0.4",
+    "olymp-ui": "^20.0.4",
     "olymp-google": "^20.1.22-0",
     "olymp-graphql": "^20.0.8",
     "olymp-icons": "^20.0.1",

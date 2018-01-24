@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'olymp-router';
 import { withAuth } from 'olymp-auth';
-import { Button } from 'olymp-fela';
+import { Button } from 'olymp-ui';
 import { createComponent } from 'react-fela';
 
 // todo: withAuth auslagern!

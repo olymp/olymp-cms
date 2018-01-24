@@ -2,8 +2,8 @@ import React from 'react';
 import { compose, withState, withHandlers } from 'recompose';
 import { createReplaceQuery, createPushPathname } from 'olymp-router';
 import { getAuth } from 'olymp-auth';
-import { Avatar, Logo, Sidebar } from 'olymp-fela';
-import Menu, { Search } from 'olymp-fela/menu';
+import { Avatar, Logo, Sidebar } from 'olymp-ui';
+import Menu, { Search } from 'olymp-ui/menu';
 import {
   FaCubes,
   FaPictureO,

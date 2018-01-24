@@ -6,8 +6,8 @@ import {
   withState,
   withHandlers,
 } from 'recompose';
-import { Modal, SectionHeading, Sidebar } from 'olymp-fela';
-import Menu from 'olymp-fela/menu';
+import { Modal, SectionHeading, Sidebar } from 'olymp-ui';
+import Menu from 'olymp-ui/menu';
 import { FaPlus } from 'olymp-icons';
 import { Form, Button } from 'antd';
 import { get } from 'lodash';

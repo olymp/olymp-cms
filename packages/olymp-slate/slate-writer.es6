@@ -12,7 +12,7 @@ import TrailingBlock from 'slate-trailing-block';
 import EditTable from 'slate-edit-table';
 import EditBlockquote from 'slate-edit-blockquote';
 import { Block } from 'slate';
-import Portal from 'olymp-fela/portal';
+import Portal from 'olymp-ui/portal';
 
 import Pug from './pug/editor';
 import getSchema from './get-schema';

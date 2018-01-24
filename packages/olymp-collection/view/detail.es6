@@ -1,6 +1,6 @@
 import React from 'react';
 import { compose } from 'recompose';
-import { ContentLoader } from 'olymp-fela';
+import { ContentLoader } from 'olymp-ui';
 import { Form } from 'antd';
 import withItem from '../with-item';
 import DetailForm from '../form';

@@ -30,6 +30,9 @@ const typeDefs = `
   type Document {
     id: ID!
     rootId: String
+    parentId: ID
+    parent: Document
+    children: [Document]
     type: String
     createdAt: DateTime!
     updatedAt: DateTime!
@@ -52,6 +55,7 @@ const typeDefs = `
     id: ID
     appId: ID
     rootId: String
+    parentId: ID
     type: String
     createdAt: DateTime
     updatedAt: DateTime
