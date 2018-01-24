@@ -1,0 +1,14 @@
+
+const access = [
+  {
+    '*': 'read',
+    '#news.gzk': 'crwd',
+    '#news.gzk': 'READ_WRITE_DELETE',
+    '#news.gzk': 'READ_WRITE_DELETE',
+    '#file.gzk': 'READ_WRITE_DELETE',
+
+    '#org.ortho.beni': 'crud',
+    '#news.ortho': 'crud',
+    '#news.ortho': 'crud',
+  }
+];
