@@ -1,7 +1,7 @@
 {
   "name": "orgilla-cms",
   "private": true,
-  "version": "20.1.22-0",
+  "version": "20.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
