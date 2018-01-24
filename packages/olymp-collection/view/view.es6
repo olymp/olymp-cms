@@ -85,6 +85,36 @@ const enhance = compose(
     const startField = null;
     const endField = null;
     return {
+      newCollection: {
+        label: 'Neuigkeit',
+        icon: 'FaPenicl',
+        name: 'news',
+        fields: {
+          start: {
+            label: 'Name',
+            edit: 'date',
+            editProps: {
+              min: 1,
+              max: 2
+            }
+          },
+          name: {
+            label: 'Name',
+            edit: 'input',
+            editProps: {
+              min: 1,
+              max: 2
+            }
+          },
+          pfarrer: {
+            label: 'Pfarrer',
+            edit: 'rel',
+            editProps: {
+              to: '#user.pfarrer'
+            }
+          }
+        }
+      },
       collection: {
         specialFields: {},
         fields: [
@@ -139,13 +169,14 @@ export default class CollectionView extends Component {
   renderMenu = () => {
     const {
       collection,
+      newCollection,
       menuItems,
       typeName,
       updateQuery,
       keys,
       setKeys
     } = this.props;
-    const startField = get(collection, 'specialFields.startField');
+    const startField = newCollection.start;
 
     return (
       <Menu

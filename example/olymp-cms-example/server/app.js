@@ -29,7 +29,6 @@ const typeDefs = `
   }
   type Document {
     id: ID!
-    rootId: String
     parentId: ID
     parent: Document
     children: [Document]
@@ -46,6 +45,7 @@ const typeDefs = `
     color: String
     start: DateTime
     end: DateTime
+
     extract: String
     nodes: [Json!]
     text: String
@@ -54,7 +54,6 @@ const typeDefs = `
   input DocumentInput {
     id: ID
     appId: ID
-    rootId: String
     parentId: ID
     type: String
     createdAt: DateTime
