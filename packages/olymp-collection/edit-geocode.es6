@@ -1,6 +1,6 @@
 import React from 'react';
 import { toClass } from 'recompose';
-import GeocodeEditor from 'olymp-google/edits/geocode';
+import GeocodeEditor from './edits/geocode';
 import FormItem from './form-item';
 
 export default {
