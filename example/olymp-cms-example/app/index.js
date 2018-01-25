@@ -2,6 +2,7 @@
 import React from 'react';
 import { plugin as redux } from 'olymp-redux';
 import { plugin as auth, getAuth } from 'olymp-auth';
+import Error from 'olymp-ui/error';
 import { graphql } from 'react-apollo';
 import { compose } from 'recompose';
 import { get } from 'lodash';
@@ -109,6 +110,7 @@ export default enhance(({ apps, pushPathname }) => (
             />
           ))
         ])}
+        <Match component={Error} />
       </SwitchPathname>
     </Nav>
   </ThemeProvider>
