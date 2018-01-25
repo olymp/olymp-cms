@@ -11,6 +11,7 @@ const typeDefs = `
     src: String
     width: Int
     height: Int
+    crop: [Int!]
   }
   enum COLOR_FORMAT {
     RGB

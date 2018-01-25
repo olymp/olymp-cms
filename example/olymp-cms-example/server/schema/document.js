@@ -1,5 +1,5 @@
 import { findOne, updateOne, find } from 'olymp-api';
-import { get } from 'lodash';
+import { get, pick } from 'lodash';
 import algoliasearch from 'algoliasearch';
 import { format } from 'date-fns';
 
@@ -9,7 +9,13 @@ const client = algoliasearch(
 );
 
 const index = client.initIndex('document');
-
+const getDate = (value, f) => {
+  console.log(value, f);
+  if (!f || !value) {
+    return value;
+  }
+  return format(value, f);
+};
 export default {
   typeDefs: `
     enum DOCUMENT_STATE {
@@ -37,7 +43,7 @@ export default {
 
       raw(fields: [String!]): Json
       adapter: String
-      event: EventData
+      event(format: String): EventData
       nav: NavData
       slate: DocumentContent
       list: ListDocument
@@ -80,12 +86,19 @@ export default {
         title: name,
         subtitle: description
       }),
-      raw: (body, { fields }) => body,
-      event: ({ start, end, date }, { format: f }) =>
+      image: ({ image }) =>
+        image && {
+          src: image.url || image.src,
+          width: image.width,
+          height: image.height,
+          crop: image.crop
+        },
+      raw: (body, { fields }) => (fields ? pick(body, fields) : body),
+      event: ({ start, end, date }, { format }) =>
         start || end || date
           ? {
-              start: format(start || date, f || 'DD.MM.YYYY hh:mm'),
-              end
+              start: getDate(start || date, format),
+              end: getDate(end, format)
             }
           : null
     },
