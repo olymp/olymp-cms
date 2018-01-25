@@ -94,7 +94,7 @@ export default enhance(({ apps, pushPathname }) => (
               render={p => (
                 <View
                   id={p.id}
-                  typeName={collection.name}
+                  collection={collection}
                   app={app.name}
                   onClick={id =>
                     id
