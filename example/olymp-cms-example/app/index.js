@@ -4,7 +4,7 @@ import { plugin as redux } from 'olymp-redux';
 import { plugin as auth, getAuth } from 'olymp-auth';
 import Error from 'olymp-ui/error';
 import { graphql } from 'react-apollo';
-import { compose } from 'recompose';
+import { compose, withPropsOnChange } from 'recompose';
 import { get } from 'lodash';
 import gql from 'graphql-tag';
 import { plugin as apollo } from 'olymp-apollo';
@@ -12,7 +12,8 @@ import {
   plugin as router,
   SwitchPathname,
   Match,
-  withRouting
+  withRouting,
+  withPathname
 } from 'olymp-router';
 import { plugin as fela, ThemeProvider } from 'olymp-fela';
 import View from 'olymp-collection/view';
@@ -42,6 +43,7 @@ const enhance = compose(
           name
           apps {
             id
+            color
             name
             collections
           }
@@ -61,12 +63,23 @@ const enhance = compose(
       })
     }
   ),
+  withPathname,
+  withPropsOnChange(['pathname', 'apps'], ({ pathname, apps }) => ({
+    app: apps.find(
+      x => pathname === `/${x.name}` || pathname.indexOf(`/${x.name}/`) === 0
+    )
+  })),
   withRouting
 );
 
-export default enhance(({ apps, pushPathname }) => (
-  <ThemeProvider theme={{ color: '#3A1000' }}>
-    <Nav apps={apps} key={apps.length}>
+export default enhance(({ apps, pushPathname, app }) => (
+  <ThemeProvider
+    key={apps.length}
+    theme={{
+      color: (app && app.color) || '#3A1000'
+    }}
+  >
+    <Nav apps={apps}>
       <SwitchPathname>
         <Match match="/" exact render={null} />
         <Match match="/media" exact render={Pages} />
