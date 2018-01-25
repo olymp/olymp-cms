@@ -79,11 +79,7 @@ export default {
   resolvers: {
     Document: {
       adapter: ({ id }) => 'json',
-      raw: ({ id }, { fields }) => ({
-        id,
-        imraw: true,
-        fields
-      }),
+      raw: (body, { fields }) => body,
       event: ({ start, end, date }, { format: f }) =>
         start || end || date
           ? {
