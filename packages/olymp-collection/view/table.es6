@@ -4,7 +4,6 @@ import { Table, Input } from 'antd';
 import { uniq } from 'lodash';
 import { compose, withPropsOnChange, withState } from 'recompose';
 import isAfter from 'date-fns/isAfter';
-import { getPrintableValue } from '../utils';
 
 const StyledTable = createComponent(
   () => ({
