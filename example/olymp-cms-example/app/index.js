@@ -43,7 +43,7 @@ const enhance = compose(
           apps {
             id
             name
-            schema
+            collections
           }
         }
       }
@@ -87,23 +87,19 @@ export default enhance(({ apps, pushPathname }) => (
               />
             )}
           />,
-          ...[
-            {
-              name: 'news'
-            }
-          ].map(type => (
+          ...app.collections.map(collection => (
             <Match
-              key={type.name}
-              match={`/${app.name}/${type.name}(/:id)`}
+              key={collection.name}
+              match={`/${app.name}/${collection.name}(/:id)`}
               render={p => (
                 <View
                   id={p.id}
-                  typeName={type.name}
+                  typeName={collection.name}
                   app={app.name}
                   onClick={id =>
                     id
-                      ? pushPathname(`/${app.name}/${type.name}/${id}`)
-                      : pushPathname(`/${app.name}/${type.name}`)
+                      ? pushPathname(`/${app.name}/${collection.name}/${id}`)
+                      : pushPathname(`/${app.name}/${collection.name}`)
                   }
                 />
               )}

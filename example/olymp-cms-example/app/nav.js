@@ -72,13 +72,7 @@ export default enhance(
               >
                 Seiten
               </Menu.Item>
-              {(
-                app.schema || [
-                  {
-                    name: 'news'
-                  }
-                ]
-              ).map(collection => (
+              {app.collections.map(collection => (
                 <Menu.Item
                   key={collection.name}
                   active={pathname === '/'}
@@ -87,7 +81,7 @@ export default enhance(
                     pushPathname(`/${app.name}/${collection.name}`)
                   }
                 >
-                  {collection.name}
+                  {collection.label}
                 </Menu.Item>
               ))}
             </Menu.List>

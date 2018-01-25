@@ -8,7 +8,7 @@ export default {
       updatedAt: DateTime!
       name: String
       description: String
-      schema: Json
+      collections: [Json!]!
     }
     input AppInput {
       id: ID
@@ -16,8 +16,9 @@ export default {
       updatedAt: DateTime
       name: String
       description: String
-      schema: Json
     }
+  `,
+  /*
     extend type Query {
       app(id: ID!): App
       appList: [App]!
@@ -25,17 +26,17 @@ export default {
     extend type Mutation {
       app(data: AppInput!): App
     }
-  `,
+  */
   resolvers: {
+    App: {
+      collections: ({ collections }) => collections || []
+    },
     Query: {
-      app: (_, { id }) => findOne('app', id),
-      appList: (_, __, context) => {
-        console.log(context);
-        return find('app');
-      }
+      // app: (_, { id }) => findOne('app', id),
+      // appList: (_, __) => find('app')
     },
     Mutation: {
-      app: (_, { data }) => updateOne('app', data)
+      // app: (_, { data }) => updateOne('app', data)
     }
   }
 };
