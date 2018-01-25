@@ -71,7 +71,7 @@ export default enhance(({ apps, pushPathname }) => (
         <Match match="/" exact render={null} />
         <Match match="/media" exact render={Pages} />
         {apps.map(app => [
-          <Match
+          /* <Match
             key={app.id}
             match={`/${app.name}/pages(/:id)`}
             render={p => (
@@ -86,7 +86,7 @@ export default enhance(({ apps, pushPathname }) => (
                 }
               />
             )}
-          />,
+          />, */
           ...app.collections.map(collection => (
             <Match
               key={collection.name}

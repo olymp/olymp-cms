@@ -247,7 +247,6 @@ export default class CollectionView extends Component {
     const {
       collection,
       fieldNames,
-      typeName,
       id,
       refetchQuery,
       isLoading,
