@@ -40,8 +40,8 @@ export default {
       event: EventData
       nav: NavData
       slate: DocumentContent
-      listData: ListDocument
-      tableData: TableDocument
+      list: ListDocument
+      columns: [String]
     }
     type NavData {
       slug: String
@@ -65,9 +65,6 @@ export default {
       title: String
       subtitle: String
     }
-    type TableDocument {
-      values: [String]
-    }
     extend type Query {
       document(id: ID!): Document
       documentList(type: String, app: String, state: DOCUMENT_STATE): [Document]!
@@ -79,6 +76,10 @@ export default {
   resolvers: {
     Document: {
       adapter: ({ id }) => 'json',
+      list: ({ name, description }) => ({
+        title: name,
+        subtitle: description
+      }),
       raw: (body, { fields }) => body,
       event: ({ start, end, date }, { format: f }) =>
         start || end || date
