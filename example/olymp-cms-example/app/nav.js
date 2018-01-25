@@ -59,9 +59,9 @@ export default enhance(
                 Mediathek
               </Menu.Item>
               <Menu.Item
-                active={pathname === `/${app.name}/pages`}
+                active={pathname === `/${app.name}/page`}
                 icon={<FaBook />}
-                onClick={() => pushPathname(`/${app.name}/pages`)}
+                onClick={() => pushPathname(`/${app.name}/page`)}
               >
                 Seiten
               </Menu.Item>

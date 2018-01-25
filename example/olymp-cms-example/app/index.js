@@ -72,6 +72,22 @@ const enhance = compose(
   withRouting
 );
 
+const pageSchema = {
+  label: 'Seite',
+  icon: 'page',
+  name: 'page',
+  fields: {
+    name: {
+      label: 'Name',
+      edit: 'input',
+      editProps: {
+        min: 1,
+        max: 2
+      }
+    }
+  }
+};
+
 export default enhance(({ apps, pushPathname, app }) => (
   <ThemeProvider
     key={apps.length}
@@ -83,24 +99,8 @@ export default enhance(({ apps, pushPathname, app }) => (
       <SwitchPathname>
         <Match match="/" exact render={null} />
         <Match match="/media" exact render={Pages} />
-        {apps.map(app => [
-          /* <Match
-            key={app.id}
-            match={`/${app.name}/pages(/:id)`}
-            render={p => (
-              <View
-                id={p.id}
-                typeName="page"
-                app={app.name}
-                onClick={id =>
-                  id
-                    ? pushPathname(`/${app.name}/pages/${id}`)
-                    : pushPathname(`/${app.name}/pages`)
-                }
-              />
-            )}
-          />, */
-          ...app.collections.map(collection => (
+        {apps.map(app =>
+          [pageSchema, ...app.collections].map(collection => (
             <Match
               key={collection.name}
               match={`/${app.name}/${collection.name}(/:id)`}
@@ -118,7 +118,7 @@ export default enhance(({ apps, pushPathname, app }) => (
               )}
             />
           ))
-        ])}
+        )}
         <Match component={Error} />
       </SwitchPathname>
     </Nav>
