@@ -86,25 +86,15 @@ const enhance = compose(
 
 const FormComponent = enhance(
   ({
-    schema,
     schemaWithEdits,
     inline,
     vertical,
     item,
-    className,
-    validateFields,
     form,
-    collection,
-    setTab,
-    tab,
-    expand,
-    collapse,
     onSave,
     onDelete,
     onClose,
-    collapsed,
-    embedded,
-    ...rest
+    embedded
   }) => (
     <Sidebar
       right
@@ -147,10 +137,10 @@ const FormComponent = enhance(
 
         {embedded ? (
           <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
-            <Items schema={schemaWithEdits} form={form} item={item} {...rest} />
+            <Items schema={schemaWithEdits} form={form} item={item} />
           </Form>
         ) : (
-          <Items schema={schemaWithEdits} form={form} item={item} {...rest} />
+          <Items schema={schemaWithEdits} form={form} item={item} />
         )}
       </Container>
     </Sidebar>
