@@ -61,6 +61,12 @@ const enhance = compose(
           id
           raw
           state
+          image {
+            src
+            width
+            height
+          }
+          color
           event {
             start
             end
@@ -152,10 +158,9 @@ const enhance = compose(
         .map(item => ({
           key: item.id,
           image: item.image,
-          description: item.description,
+          list: item.list,
           color: item.color,
           active: item.id === id,
-          label: item.name,
           onClick: () => onClick(item.id)
         }))
     })
@@ -230,20 +235,18 @@ export default class CollectionView extends Component {
           </Menu.Item>
         )}
         <Menu.Divider />
-        {menuItems.map(
-          ({ key, label, description, image, color, active, onClick }) => (
-            <Menu.Item
-              key={key}
-              onClick={onClick}
-              icon={!!image && <Image value={image} width={40} height={40} />}
-              active={active}
-              large={!!image}
-            >
-              {color ? <span style={{ color }}>{label}</span> : label}
-              {!!description && <small>{description}</small>}
-            </Menu.Item>
-          )
-        )}
+        {menuItems.map(({ key, list, image, color, active, onClick }) => (
+          <Menu.Item
+            key={key}
+            onClick={onClick}
+            icon={!!image && <Image value={image} width={40} height={40} />}
+            active={active}
+            large={!!image}
+          >
+            {color ? <span style={{ color }}>{list.title}</span> : list.title}
+            {!!list.subtitle && <small>{list.subtitle}</small>}
+          </Menu.Item>
+        ))}
       </Menu>
     );
   };

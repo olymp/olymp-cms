@@ -55,7 +55,7 @@ const enhance = compose(
 @enhance
 export default class CalendarView extends Component {
   render() {
-    const { collection, events, updateQuery, typeName } = this.props;
+    const { collection, events, updateQuery } = this.props;
     const isEvent = !!get(collection, 'mapping.event');
     const hasEnd = !!get(collection, 'mapping.event.end');
 
@@ -80,7 +80,7 @@ export default class CalendarView extends Component {
         components={{
           agenda: {
             event: EventAgenda(event =>
-              updateQuery({ [`@${typeName.toLowerCase()}`]: event.id })
+              updateQuery({ [`@${collection.name}`]: event.id })
             )
           }
         }}
@@ -101,11 +101,11 @@ export default class CalendarView extends Component {
         min={min}
         max={max}
         onSelectEvent={event =>
-          updateQuery({ [`@${typeName.toLowerCase()}`]: event.id })
+          updateQuery({ [`@${collection.name}`]: event.id })
         }
         onSelectSlot={slotInfo => {
           const query = {
-            [`@${typeName.toLowerCase()}`]: 'new'
+            [`@${collection.name}`]: 'new'
           };
 
           if (isEvent) {
