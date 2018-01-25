@@ -46,7 +46,6 @@ export default {
       nav: NavData
       slate: DocumentContent
       list: ListDocument
-      columns: [String]
     }
     type NavData {
       slug: String
@@ -95,7 +94,6 @@ export default {
       createdAt: ({ createdAt }, { format }) =>
         getDate(createdAt || new Date(), format),
       adapter: () => 'json',
-      columns: item => Object.keys(item),
       list: ({ name, description }) => ({
         title: name,
         subtitle: description
