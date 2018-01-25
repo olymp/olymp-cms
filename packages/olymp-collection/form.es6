@@ -2,7 +2,7 @@ import React from 'react';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { Container, Sidebar } from 'olymp-ui';
 import Menu from 'olymp-ui/menu';
-import AntMenu from 'olymp-ui/menu/ant';
+import AntMenu from 'olymp-antd/menu';
 import { withRouter, Prompt } from 'olymp-router';
 import { FaPencil, FaTrashO, FaSave, FaTimes } from 'olymp-icons';
 import { get } from 'lodash';

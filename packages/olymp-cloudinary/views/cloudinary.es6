@@ -5,13 +5,13 @@ import { Upload } from 'antd';
 import { createComponent } from 'react-fela';
 import { Sidebar, Drawer } from 'olymp-ui';
 import Menu, { StackedMenu } from 'olymp-ui/menu';
-import AntMenu from 'olymp-ui/menu/ant';
+import AntMenu from 'olymp-antd/menu';
 import {
   FaChevronLeft,
   FaPictureO,
   FaClose,
   FaSave,
-  FaPlus,
+  FaPlus
 } from 'olymp-icons';
 import { sortBy } from 'lodash';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
@@ -29,8 +29,8 @@ const INITIAL_ARRAY = [];
 const Label = createComponent(
   ({ theme }) => ({
     '> circle': {
-      fill: theme.dark5,
-    },
+      fill: theme.dark5
+    }
   }),
   ({ children, ...p }) => (
     <svg
@@ -54,7 +54,7 @@ const Label = createComponent(
         {children}
       </text>
     </svg>
-  ),
+  )
 );
 
 const addSortedChildren = (obj, sorter = 'length') => {
@@ -76,7 +76,7 @@ const addSortedChildren = (obj, sorter = 'length') => {
       result.children.push(childs);
       return result;
     },
-    { ...obj, children: [], map: {} },
+    { ...obj, children: [], map: {} }
   );
 };
 
@@ -103,14 +103,14 @@ const addSortedChildren = (obj, sorter = 'length') => {
         result[app] = {
           children: [],
           map: {},
-          items: [],
+          items: []
         };
       }
       if (!result[app].map[f]) {
         result[app].map[f] = {
           children: [],
           map: {},
-          items: [],
+          items: []
         };
       }
       result[app].items.push(item);
@@ -122,14 +122,14 @@ const addSortedChildren = (obj, sorter = 'length') => {
           tags[GENERAL] = {
             children: [],
             map: {},
-            items: [],
+            items: []
           };
         }
         if (!tags[GENERAL].map[EMPTY]) {
           tags[GENERAL].map[EMPTY] = {
             children: [],
             map: {},
-            items: [],
+            items: []
           };
         }
         tags[GENERAL].items.push(item);
@@ -150,14 +150,14 @@ const addSortedChildren = (obj, sorter = 'length') => {
             tags[firstPart] = {
               children: [],
               map: {},
-              items: [],
+              items: []
             };
           }
           if (!tags[firstPart].map[lastPart]) {
             tags[firstPart].map[lastPart] = {
               children: [],
               map: {},
-              items: [],
+              items: []
             };
           }
           tags[firstPart].items.push(item);
@@ -169,15 +169,15 @@ const addSortedChildren = (obj, sorter = 'length') => {
     }, {});
 
     return {
-      tree: apps,
+      tree: apps
     };
-  },
+  }
 )
 @withPropsOnChange(['sorting', 'tree'], ({ tree, sorting, items }) => ({
-  tree: addSortedChildren({ map: tree, items }, sorting),
+  tree: addSortedChildren({ map: tree, items }, sorting)
 }))
 @withPropsOnChange(['value'], ({ value }) => ({
-  value: value ? value.filter(x => x) : null,
+  value: value ? value.filter(x => x) : null
 }))
 @withState('collapsed', 'setCollapsed', true)
 @withState('sorting', 'setSorting', 'length')
@@ -185,10 +185,10 @@ const addSortedChildren = (obj, sorter = 'length') => {
 @withState(
   'selection',
   'setSelection',
-  ({ value }) => (value ? value.map(v => v.id) : []),
+  ({ value }) => (value ? value.map(v => v.id) : [])
 )
 @withPropsOnChange(['selection', 'items'], ({ selection, items = [] }) => ({
-  selectedItems: items.filter(x => selection.includes(x.id)),
+  selectedItems: items.filter(x => selection.includes(x.id))
 }))
 @withUpload
 class CloudinaryView extends Component {
@@ -202,7 +202,7 @@ class CloudinaryView extends Component {
     removeSelection: PropTypes.func,
     setSelection: PropTypes.func,
     format: PropTypes.string,
-    multi: PropTypes.bool,
+    multi: PropTypes.bool
   };
 
   static defaultProps = {
@@ -215,7 +215,7 @@ class CloudinaryView extends Component {
     addSelection: undefined,
     removeSelection: undefined,
     setSelection: undefined,
-    format: undefined,
+    format: undefined
   };
 
   componentWillReceiveProps({ selectedItems = [] }) {
@@ -326,7 +326,7 @@ class CloudinaryView extends Component {
       multi,
       value,
       onChange,
-      onClose,
+      onClose
     } = this.props;
 
     const [key0, key1] = tags;
