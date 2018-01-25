@@ -95,7 +95,7 @@ export default {
       createdAt: ({ createdAt }, { format }) =>
         getDate(createdAt || new Date(), format),
       adapter: () => 'json',
-      columns: ({ raw = {} }) => Object.keys(raw),
+      columns: item => Object.keys(item),
       list: ({ name, description }) => ({
         title: name,
         subtitle: description
