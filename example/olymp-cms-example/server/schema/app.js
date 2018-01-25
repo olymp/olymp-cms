@@ -4,6 +4,7 @@ export default {
   typeDefs: `
     type App {
       id: ID!
+      color: String
       createdAt: DateTime!
       updatedAt: DateTime!
       name: String
