@@ -12,7 +12,7 @@ export default withPropsOnChange(
     setUploading,
     uploading,
     setSelection,
-    addSelection,
+    addSelection
   }) => {
     const saveProgress = file =>
       setUploading([
@@ -22,8 +22,8 @@ export default withPropsOnChange(
           percent: file.percent,
           size: file.size,
           status: file.status,
-          response: file.response,
-        },
+          response: file.response
+        }
       ]);
 
     if (!cloudinaryRequest) {
@@ -39,7 +39,7 @@ export default withPropsOnChange(
           api_key: apiKey,
           signature,
           timestamp,
-          folder,
+          folder
         },
         action: url,
         beforeUpload: () => {
@@ -62,7 +62,7 @@ export default withPropsOnChange(
                     .split('/')
                     .filter((x, i) => i !== 0)
                     .join('/')
-                : null,
+                : null
             }).then(({ data }) => {
               if (data && data.cloudinaryRequestDone) {
                 addSelection(data.cloudinaryRequestDone.id);
@@ -79,8 +79,8 @@ export default withPropsOnChange(
             console.log('error');
             message.error(`${file.name} file upload failed.`);
           }
-        },
-      },
+        }
+      }
     };
-  },
+  }
 );

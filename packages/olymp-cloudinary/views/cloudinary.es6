@@ -15,7 +15,7 @@ import {
   FaPlus
 } from 'olymp-icons';
 import { sortBy } from 'lodash';
-import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
+import { queryMedias } from '../gql';
 import Gallery from './gallery';
 import withUpload from './upload';
 import Detail from '../detail';
@@ -82,8 +82,6 @@ const addSortedChildren = (obj, sorter = 'length') => {
 };
 
 @queryMedias
-@cloudinaryRequest
-@cloudinaryRequestDone
 @withPropsOnChange(
   ['items', 'search', 'format'],
   ({ items, search, format }) => {
