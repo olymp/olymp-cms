@@ -55,6 +55,7 @@ export default {
       children: [Document]
     }
     type EventData {
+      allDay: Boolean
       start(format: String): DateTime
       end(format: String): DateTime
       duration(as: String): Int
