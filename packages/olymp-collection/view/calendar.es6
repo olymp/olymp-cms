@@ -37,15 +37,15 @@ const Calendar = createComponent(
 const enhance = compose(
   withPropsOnChange(['items', 'collection'], ({ items, collection }) => {
     const isEvent = !!get(collection, 'mapping.event');
-    const allDay = !!get(collection, 'mapping.event.allDay');
+    const event = get(collection, 'mapping.event', {});
 
     const events = (items || []).map(item => ({
       id: item.id,
       title: item.list.title,
       desc: item.list.subtitle,
-      allDay,
-      start: new Date(items.event.start),
-      end: isEvent ? new Date(item.event.end) : new Date(item.event.end)
+      allDay: event.allDay,
+      start: new Date(event.start),
+      end: isEvent ? new Date(event.end) : new Date(event.end)
     }));
 
     return { events };

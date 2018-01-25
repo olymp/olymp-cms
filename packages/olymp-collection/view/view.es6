@@ -61,6 +61,11 @@ const enhance = compose(
           id
           raw
           state
+          event {
+            start
+            end
+            allDay
+          }
           list {
             title
             subtitle
