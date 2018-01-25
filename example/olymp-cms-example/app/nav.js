@@ -52,9 +52,9 @@ export default enhance(
           {apps.map(app => (
             <Menu.List title={app.name} key={app.id} extra={<FaCog />}>
               <Menu.Item
-                active={pathname === '/media'}
+                active={pathname === `/${app.name}/media`}
                 icon={<FaImage />}
-                onClick={() => pushPathname('/media')}
+                onClick={() => pushPathname(`/${app.name}/media`)}
               >
                 Mediathek
               </Menu.Item>

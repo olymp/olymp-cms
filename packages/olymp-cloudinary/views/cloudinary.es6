@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { withPropsOnChange, withState } from 'recompose';
 import { Upload } from 'antd';
 import { createComponent } from 'react-fela';
-import { Sidebar, Drawer } from 'olymp-ui';
+import { SecondarySidebar } from 'olymp-ui/menu/trio';
+import { Drawer } from 'olymp-ui';
 import Menu, { StackedMenu } from 'olymp-ui/menu';
 import AntMenu from 'olymp-antd/menu';
 import {
@@ -337,8 +338,8 @@ class CloudinaryView extends Component {
       group && tag ? node.map[group].map[tag].items : node.items;
 
     return (
-      <Sidebar
-        left={inModal ? 0 : 72}
+      <SecondarySidebar
+        width={240}
         menu={
           <StackedMenu
             keys={tags.filter((x, i) => i < 1)}
@@ -437,7 +438,7 @@ class CloudinaryView extends Component {
             </Menu>
           )}
         </Drawer>
-      </Sidebar>
+      </SecondarySidebar>
     );
   }
 }
