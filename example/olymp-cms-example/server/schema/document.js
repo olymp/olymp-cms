@@ -1,5 +1,5 @@
 import { findOne, updateOne, find, ObjectID } from 'olymp-api';
-import { get, pick } from 'lodash';
+import { get, pick, omit } from 'lodash';
 import algoliasearch from 'algoliasearch';
 import { format } from 'date-fns';
 
@@ -135,7 +135,9 @@ export default {
         }
         data.updatedAt = new Date();
         updateOne('document', data).then(item => {
-          index.addObject(item);
+          setTimeout(() => {
+            index.addObject({ ...omit(item, ['id']), objectID: item.id });
+          });
           return item;
         });
       }
