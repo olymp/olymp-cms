@@ -59,9 +59,12 @@ const enhance = compose(
       query documentList($type: String, $app: String) {
         documentList(type: $type, app: $app) {
           id
+          raw
           state
-          name
-          color
+          list {
+            title
+            subtitle
+          }
         }
       }
     `,
@@ -83,10 +86,21 @@ const enhance = compose(
     const startField = null;
     const endField = null;
     return {
-      newCollection: {
+      collection: {
         label: 'Neuigkeit',
         icon: 'FaPenicl',
         name: 'news',
+        mapping: {
+          description: 'pfarrer.name',
+          event: {
+            start: 'datum'
+          },
+          list: {
+            title: 'name',
+            subtitle: 'name'
+          }
+        },
+        columns: ['name', 'pfarrer.name'],
         fields: {
           start: {
             label: 'Name',
@@ -113,25 +127,6 @@ const enhance = compose(
           }
         }
       },
-      collection: {
-        specialFields: {},
-        fields: [
-          {
-            name: 'name',
-            specialFields: {},
-            innerType: {
-              specialFields: {},
-              kind: 'SCALAR',
-              name: 'String'
-            },
-            type: {
-              specialFields: {},
-              kind: 'SCALAR',
-              name: 'String'
-            }
-          }
-        ]
-      },
       items: startField
         ? items.map(item => ({
             ...item,
@@ -145,7 +140,7 @@ const enhance = compose(
     };
   }),
   withPropsOnChange(
-    ['items', 'typeName', 'id', 'keys'],
+    ['items', 'id', 'keys'],
     ({ items = [], onClick, id, keys }) => ({
       menuItems: items
         .filter(x => x.state === (keys[0] || 'PUBLISHED'))
@@ -165,27 +160,16 @@ const enhance = compose(
 @enhance
 export default class CollectionView extends Component {
   renderMenu = () => {
-    const {
-      collection,
-      newCollection,
-      menuItems,
-      typeName,
-      updateQuery,
-      keys,
-      setKeys
-    } = this.props;
-    const startField = newCollection.start;
+    const { collection, menuItems, updateQuery, keys, setKeys } = this.props;
+    const isEvent = !!get(collection, 'mapping.event');
 
     return (
       <Menu
         header={
           <Menu.Item
             icon={
-              collection.specialFields.icon ? (
-                <Icon
-                  type={collection.specialFields.icon}
-                  style={{ fontSize: 32 }}
-                />
+              collection.icon ? (
+                <Icon type={collection.icon} style={{ fontSize: 32 }} />
               ) : (
                 <FaDatabase />
               )
@@ -194,7 +178,7 @@ export default class CollectionView extends Component {
             extra={
               <Menu.Extra
                 onClick={() =>
-                  updateQuery({ [`@${typeName.toLowerCase()}`]: 'new' })
+                  updateQuery({ [`@${collection.name.toLowerCase()}`]: 'new' })
                 }
                 disabled={!!keys.length}
                 large
@@ -203,7 +187,7 @@ export default class CollectionView extends Component {
               </Menu.Extra>
             }
           >
-            {get(collection, 'specialFields.label', collection.name)}
+            {collection.label}
           </Menu.Item>
         }
       >
@@ -213,7 +197,7 @@ export default class CollectionView extends Component {
           </Menu.Item>
         )}
         {!keys.length &&
-          !!startField && (
+          !!isEvent && (
             <Menu.Item
               icon={<FaClockO />}
               extra={<FaAngleRight />}
@@ -263,7 +247,6 @@ export default class CollectionView extends Component {
     const {
       collection,
       fieldNames,
-      typeName,
       id,
       refetchQuery,
       isLoading,
@@ -271,8 +254,8 @@ export default class CollectionView extends Component {
       items,
       onClick
     } = this.props;
-    const nameField = get(collection, 'specialFields.nameField', 'name');
-    const startField = get(collection, 'specialFields.startField');
+    const isEvent = !!get(collection, 'mapping.event');
+    const activeItem = items.find(x => x.id === id) || {};
 
     return (
       <SecondarySidebar
@@ -286,7 +269,7 @@ export default class CollectionView extends Component {
         }
       >
         <FlexContainer>
-          {startField ? (
+          {isEvent ? (
             <Calendar {...this.props} />
           ) : (
             <Table
@@ -300,14 +283,11 @@ export default class CollectionView extends Component {
           <Menu
             header={
               id === 'new' ? (
-                <Menu.Item large>
-                  {collection.specialFields.label} anlegen
-                </Menu.Item>
+                <Menu.Item large>{collection.label} anlegen</Menu.Item>
               ) : (
                 <Menu.Item large>
-                  {((items || []).find(x => x.id === id) || {})[nameField] ||
-                    'Bearbeiten'}
-                  <small>{collection.specialFields.label} bearbeiten</small>
+                  {get(activeItem, 'list.title')}
+                  <small>{collection.label} bearbeiten</small>
                 </Menu.Item>
               )
             }
@@ -320,7 +300,6 @@ export default class CollectionView extends Component {
               refetchQuery={refetchQuery}
               fieldNames={fieldNames}
               collection={collection}
-              typeName={typeName}
             />
           </Menu>
         </Drawer>

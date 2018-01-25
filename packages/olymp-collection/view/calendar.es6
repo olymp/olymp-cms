@@ -6,7 +6,6 @@ import BigCalendar from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { format, compareAsc } from 'date-fns';
 import moment from 'moment';
-import { getPrintableValue } from '../utils';
 
 BigCalendar.momentLocalizer(moment);
 
@@ -27,61 +26,38 @@ const Calendar = createComponent(
       borderRadius: 0,
       marginX: theme.space1,
       onHover: {
-        opacity: 0.67,
-      },
-    },
+        opacity: 0.67
+      }
+    }
   }),
   p => <BigCalendar {...p} />,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const enhance = compose(
-  withPropsOnChange(
-    ['items', 'collection', 'sortBy'],
-    ({ items, collection, sortBy }) => {
-      const nameField = get(collection, 'specialFields.nameField', 'name');
-      const descriptionField = get(
-        collection,
-        'specialFields.descriptionField',
-      );
-      const startField = get(collection, 'specialFields.startField');
-      const endField = get(collection, 'specialFields.endField');
-      const allDay =
-        collection.fields.find(x => x.name === startField).innerType.name ===
-        'Date';
+  withPropsOnChange(['items', 'collection'], ({ items, collection }) => {
+    const isEvent = !!get(collection, 'mapping.event');
+    const allDay = !!get(collection, 'mapping.event.allDay');
 
-      const events = (items || []).map(item => ({
-        id: item.id,
-        title: item[nameField],
-        desc:
-          !!descriptionField &&
-          getPrintableValue(
-            item[sortBy || descriptionField],
-            collection.fields.find(
-              field => field.name === (sortBy || descriptionField),
-            ),
-          ),
-        allDay,
-        start: new Date(item[startField]),
-        end: endField ? new Date(item[endField]) : new Date(item[startField]),
-      }));
+    const events = (items || []).map(item => ({
+      id: item.id,
+      title: item.list.title,
+      desc: item.list.subtitle,
+      allDay,
+      start: new Date(items.event.start),
+      end: isEvent ? new Date(item.event.end) : new Date(item.event.end)
+    }));
 
-      return { events, startField, endField };
-    },
-  ),
+    return { events };
+  })
 );
 
 @enhance
 export default class CalendarView extends Component {
   render() {
-    const {
-      collection,
-      events,
-      updateQuery,
-      typeName,
-      startField,
-      endField,
-    } = this.props;
+    const { collection, events, updateQuery, typeName } = this.props;
+    const isEvent = !!get(collection, 'mapping.event');
+    const hasEnd = !!get(collection, 'mapping.event.end');
 
     return (
       <Calendar
@@ -98,15 +74,15 @@ export default class CalendarView extends Component {
           agenda: 'Agenda',
           date: 'Datum',
           time: 'Zeit',
-          event: collection.name,
+          event: collection.label
           // showMore: Function
         }}
         components={{
           agenda: {
             event: EventAgenda(event =>
-              updateQuery({ [`@${typeName.toLowerCase()}`]: event.id }),
-            ),
-          },
+              updateQuery({ [`@${typeName.toLowerCase()}`]: event.id })
+            )
+          }
         }}
         formats={{
           dateFormat: 'DD.',
@@ -120,7 +96,7 @@ export default class CalendarView extends Component {
           eventTimeRangeFormat: ({ start, end }) =>
             compareAsc(start, end)
               ? `${format(start, 'HH:mm')} bis ${format(end, 'HH:mm')}`
-              : format(start, 'HH:mm'),
+              : format(start, 'HH:mm')
         }}
         min={min}
         max={max}
@@ -129,15 +105,15 @@ export default class CalendarView extends Component {
         }
         onSelectSlot={slotInfo => {
           const query = {
-            [`@${typeName.toLowerCase()}`]: 'new',
+            [`@${typeName.toLowerCase()}`]: 'new'
           };
 
-          if (startField) {
-            query[startField] = slotInfo.start;
+          if (isEvent) {
+            query.start = slotInfo.start;
           }
 
-          if (endField) {
-            query[endField] = slotInfo.end;
+          if (hasEnd) {
+            query.end = slotInfo.end;
           }
 
           updateQuery(query);
