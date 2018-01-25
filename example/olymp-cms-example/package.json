@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node dev",
+    "dev": "npm link olymp-ui && node dev",
     "test": "echo \"Error: no test specified\" && exit 1",
     "logs": "sls logs -f graphql",
     "local": "sls offline start --port 4000",
