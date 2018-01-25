@@ -5,7 +5,8 @@ const port = parseInt(process.env.PORT, 10);
 const auth = {
   AUTH0_CLIENT_ID: 'ZHQ63LtU0ghx9oUDQtG3R9giPOQIxUR7',
   AUTH0_DOMAIN: 'orgilla.eu.auth0.com',
-  AUTH0_AUDIENCE: 'default'
+  AUTH0_AUDIENCE: 'default',
+  ALGOLIA_APPLICATION_ID: 'RDGON4FSOY'
 };
 
 require('olymp-webpack').dev([
@@ -14,7 +15,8 @@ require('olymp-webpack').dev([
     entry: `olymp/dom?${path.resolve(__dirname, 'app')}`,
     plugins: ['olymp-webpack-babel', 'olymp-webpack-less', 'olymp-webpack-pwa'],
     env: {
-      ...auth
+      ...auth,
+      ALGOLIA_SEARCH_KEY: '59b70768438dbd48664400d5854c6c00'
     },
     proxy: {
       '/graphql': `http://localhost:${port + 1}`
@@ -28,8 +30,8 @@ require('olymp-webpack').dev([
     plugins: ['olymp-webpack-babel', 'olymp-webpack-lambda'],
     env: {
       MONGODB_URI: process.env.MONGODB_URI,
-      AUTH0_MANAGEMENT_CLIENT_AUDIENCE: 'https://orgilla.eu.auth0.com/api/v2/',
-      AUTH0_MANAGEMENT_CLIENT_ID: 'lVCIlRHrwu3z5mPgCf7wct5OpSs6A2uF',
+      ALGOLIA_API_KEY: process.env.ALGOLIA_API_KEY,
+      AUTH0_MANAGEMENT_CLIENT_ID: 'fRrvAhViv1QXxcWvxmUpLZJLPzEdQ5f8',
       AUTH0_MANAGEMENT_CLIENT_SECRET:
         process.env.AUTH0_MANAGEMENT_CLIENT_SECRET,
       ...auth

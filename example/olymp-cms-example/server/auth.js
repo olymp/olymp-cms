@@ -8,7 +8,7 @@ const MANAGEMENT_CLIENT_AUDIENCE = process.env.AUTH0_MANAGEMENT_CLIENT_AUDIENCE;
 const DOMAIN = process.env.AUTH0_DOMAIN;
 const AUDIENCE = process.env.AUTH0_AUDIENCE;
 
-const ACCESS = `https://diego.one/`;
+const ACCESS = `https://orgil.la/`;
 const TOKEN_ISSUER = `https://${process.env.AUTH0_DOMAIN}/`;
 const JWKS_URI = `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`;
 const MANAGEMENT_SCOPES = 'read:users';

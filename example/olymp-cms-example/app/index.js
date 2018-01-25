@@ -1,9 +1,10 @@
 // import App from 'olymp-react';
 import React from 'react';
 import { plugin as redux } from 'olymp-redux';
-import { plugin as auth } from 'olymp-auth';
+import { plugin as auth, getAuth } from 'olymp-auth';
 import { graphql } from 'react-apollo';
 import { compose } from 'recompose';
+import { get } from 'lodash';
 import gql from 'graphql-tag';
 import { plugin as apollo } from 'olymp-apollo';
 import {
@@ -30,21 +31,31 @@ export const plugins = [
 
 // #3A1000
 const enhance = compose(
+  getAuth,
   graphql(
     gql`
-      query appList {
-        appList {
+      query user($id: ID!) {
+        user(id: $id) {
           id
+          email
           name
-          schema
+          apps {
+            id
+            name
+            schema
+          }
         }
       }
     `,
     {
-      options: ({ id }) => ({}),
+      options: ({ user = {} }) => ({
+        fetchPolicy: !get(user, 'sub') ? 'cache-only' : undefined,
+        variables: { id: get(user, 'sub') }
+      }),
       props: ({ ownProps, data }) => ({
         ...ownProps,
-        apps: data.appList || [],
+        user: data.user,
+        apps: get(data, 'user.apps') || [],
         data
       })
     }

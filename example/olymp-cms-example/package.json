@@ -34,9 +34,12 @@
     "olymp-ui": "^20.1.23",
     "olymp-utils": "^19.1.14",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "react-instantsearch": "^4.4.2",
+    "react-instantsearch-theme-algolia": "^4.4.2"
   },
   "devDependencies": {
+    "algoliasearch": "^3.24.9",
     "auth0": "^2.9.1",
     "eslint-config-olymp": "^20.1.28",
     "jsonwebtoken": "^8.1.1",

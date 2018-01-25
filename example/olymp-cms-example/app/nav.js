@@ -1,11 +1,12 @@
 import React from 'react';
-import Menu, { Search } from 'olymp-ui/menu';
+import Menu from 'olymp-ui/menu';
 import { FaSearch, FaPowerOff, FaCog, FaImage, FaBook } from 'icon88';
 import { Avatar } from 'olymp-ui';
 import { getAuth } from 'olymp-auth';
 import Sidebar from 'olymp-ui/menu/trio';
 import { compose, withState } from 'recompose';
 import { withRouting } from 'olymp-router';
+import Search from './search';
 import Logo from './logo';
 
 const enhance = compose(
