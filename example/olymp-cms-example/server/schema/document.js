@@ -11,7 +11,7 @@ const client = algoliasearch(
 const index = client.initIndex('document');
 const getDate = (value, f) => {
   if (!f || !value) {
-    return value;
+    return value ? +new Date(value) : value;
   }
   return format(value, f);
 };
@@ -89,6 +89,10 @@ export default {
       children: ({ id }) => find('document', { parentId: new ObjectID(id) })
     },
     Document: {
+      updatedAt: ({ updatedAt }, { format }) =>
+        getDate(updatedAt || new Date(), format),
+      createdAt: ({ createdAt }, { format }) =>
+        getDate(createdAt || new Date(), format),
       adapter: () => 'json',
       list: ({ name, description }) => ({
         title: name,
@@ -125,11 +129,16 @@ export default {
         )
     },
     Mutation: {
-      document: (_, { data }) =>
+      document: (_, { id, data }) => {
+        if (!id) {
+          data.createdAt = new Date();
+        }
+        data.updatedAt = new Date();
         updateOne('document', data).then(item => {
           index.addObject(item);
           return item;
-        })
+        });
+      }
     }
   }
 };
