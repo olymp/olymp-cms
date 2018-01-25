@@ -5,6 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "node dev",
     "test": "echo \"Error: no test specified\" && exit 1",
     "logs": "sls logs -f graphql",
     "local": "sls offline start --port 4000",
@@ -55,17 +56,11 @@
   "olymp": {
     "app": "./app",
     "server": "./server",
-    "plugins": [
-      "less",
-      "babel"
-    ],
+    "plugins": ["less", "babel"],
     "alias": {
       "olymp-icons": "icon88"
     },
-    "externals": [
-      "icon88",
-      "hashtax"
-    ],
+    "externals": ["icon88", "hashtax"],
     "transform": {
       "icon88": {
         "transform": "icon88/lib/${member}",
