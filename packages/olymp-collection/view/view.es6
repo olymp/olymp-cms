@@ -59,18 +59,16 @@ const enhance = compose(
       query documentList($type: String, $app: String) {
         documentList(type: $type, app: $app) {
           id
-          parentId
           state
           name
-          image
           color
         }
       }
     `,
     {
-      options: ({ typeName, app }) => ({
+      options: ({ collection, app }) => ({
         variables: {
-          type: typeName,
+          type: collection.name,
           app
         }
       }),
