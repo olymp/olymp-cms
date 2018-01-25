@@ -17,7 +17,8 @@ const StyledTable = createComponent(
 );
 
 const sortValue = (item, collection) => {
-  if (item.name === (collection.specialFields.imageField || 'image' || 'bild'))
+  console.log(item, collection);
+  /* if (item.name === (collection.specialFields.imageField || 'image' || 'bild'))
     return 50;
 
   if (item.name === (collection.specialFields.nameField || 'name')) return 40;
@@ -33,7 +34,7 @@ const sortValue = (item, collection) => {
   if (item.name === (collection.specialFields.colorField || 'color' || 'farbe'))
     return 20;
 
-  return parseInt(item.specialFields.table, 10) || 10;
+  return parseInt(item.specialFields.table, 10) || 10; */
 };
 
 const getSorter = field =>
@@ -75,55 +76,32 @@ const getFilters = (items, field) => {
 const enhance = compose(
   withState('activeFilter', 'setActiveFilter'),
   withState('filter', 'setFilter', {}),
-  withPropsOnChange(
-    ['collection', 'items', 'filter', 'activeFilter'],
-    ({
-      collection,
-      items,
-      filter,
-      setFilter,
-      activeFilter,
-      setActiveFilter
-    }) => ({
-      columns: collection.fields
-        .filter(
-          x =>
-            x.specialFields.table ||
-            x.name === (collection.specialFields.nameField || 'name') ||
-            x.name ===
-              (collection.specialFields.descriptionField ||
-                'description' ||
-                'beschreibung') ||
-            x.name ===
-              (collection.specialFields.imageField || 'image' || 'bild') ||
-            x.name ===
-              (collection.specialFields.colorField || 'color' || 'farbe')
-        )
-        .sort((a, b) => sortValue(b, collection) - sortValue(a, collection))
-        .map(field => ({
-          key: field.name,
-          title: field.specialFields.label,
-          dataIndex: field.name,
-          sorter: getSorter(field),
-          filters: getFilters(items, field),
-          filterDropdown: field.innerType.name === 'String' && (
-            <Input
-              placeholder="Filter"
-              value={filter[field.name] ? filter[field.name] : ''}
-              onChange={e =>
-                setFilter({ ...filter, [field.name]: e.target.value })
-              }
-              onPressEnter={() => setActiveFilter()}
-            />
-          ),
-          filterDropdownVisible: activeFilter === field.name,
-          onFilterDropdownVisibleChange: visible =>
-            setActiveFilter(visible && field.name),
-          onFilter: (value, item) => item[field.name] === value,
-          render: value => getPrintableValue(value, field)
-        }))
-    })
-  ),
+  withPropsOnChange(['collection'], ({ collection }) => ({
+    columns: (collection.columns || Object.keys(collection.fields))
+      // .sort((a, b) => sortValue(b, collection) - sortValue(a, collection))
+      .map(name => ({
+        key: name,
+        title: collection.fields[name].label,
+        dataIndex: name,
+        // sorter: getSorter(field),
+        // filters: getFilters(items, field),
+        /* filterDropdown: field.innerType.name === 'String' && (
+              <Input
+                placeholder="Filter"
+                value={filter[field.name] ? filter[field.name] : ''}
+                onChange={e =>
+                  setFilter({ ...filter, [field.name]: e.target.value })
+                }
+                onPressEnter={() => setActiveFilter()}
+              />
+            ),
+            filterDropdownVisible: activeFilter === field.name,
+            onFilterDropdownVisibleChange: visible =>
+              setActiveFilter(visible && field.name),
+            onFilter: (value, item) => item[field.name] === value, */
+        render: value => value
+      }))
+  })),
   withPropsOnChange(['items', 'filter'], ({ items, filter }) => ({
     data: items
       .filter(item =>
