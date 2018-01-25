@@ -1,4 +1,4 @@
-import { findOne, updateOne, find } from 'olymp-api';
+import { findOne, updateOne, find, ObjectID } from 'olymp-api';
 import { get, pick } from 'lodash';
 import algoliasearch from 'algoliasearch';
 import { format } from 'date-fns';
@@ -10,7 +10,6 @@ const client = algoliasearch(
 
 const index = client.initIndex('document');
 const getDate = (value, f) => {
-  console.log(value, f);
   if (!f || !value) {
     return value;
   }
@@ -80,8 +79,17 @@ export default {
     }
   `,
   resolvers: {
+    NavData: {
+      parent: async ({ parentId }) => {
+        if (parentId && parentId.length === 24) {
+          return findOne('document', parentId);
+        }
+        return null;
+      },
+      children: ({ id }) => find('document', { parentId: new ObjectID(id) })
+    },
     Document: {
-      adapter: ({ id }) => 'json',
+      adapter: () => 'json',
       list: ({ name, description }) => ({
         title: name,
         subtitle: description
@@ -93,6 +101,7 @@ export default {
           height: image.height,
           crop: image.crop
         },
+      nav: ({ id, parentId, slug }) => ({ parentId, id, slug }),
       raw: (body, { fields }) => (fields ? pick(body, fields) : body),
       event: ({ start, end, date }, { format }) =>
         start || end || date
