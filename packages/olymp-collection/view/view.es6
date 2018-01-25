@@ -97,47 +97,6 @@ const enhance = compose(
     const startField = null;
     const endField = null;
     return {
-      collection: {
-        label: 'Neuigkeit',
-        icon: 'FaPenicl',
-        name: 'news',
-        mapping: {
-          description: 'pfarrer.name',
-          event: {
-            start: 'datum'
-          },
-          list: {
-            title: 'name',
-            subtitle: 'name'
-          }
-        },
-        columns: ['name', 'pfarrer.name'],
-        fields: {
-          start: {
-            label: 'Name',
-            edit: 'date',
-            editProps: {
-              min: 1,
-              max: 2
-            }
-          },
-          name: {
-            label: 'Name',
-            edit: 'input',
-            editProps: {
-              min: 1,
-              max: 2
-            }
-          },
-          pfarrer: {
-            label: 'Pfarrer',
-            edit: 'rel',
-            editProps: {
-              to: '#user.pfarrer'
-            }
-          }
-        }
-      },
       items: startField
         ? items.map(item => ({
             ...item,
