@@ -7,7 +7,9 @@ import { graphql } from 'react-apollo';
 import { compose, withPropsOnChange } from 'recompose';
 import { get } from 'lodash';
 import gql from 'graphql-tag';
+import { connect } from 'react-redux';
 import { plugin as apollo } from 'olymp-apollo';
+import { ScreenLoader } from 'olymp-ui';
 import {
   plugin as router,
   SwitchPathname,
@@ -19,6 +21,7 @@ import { plugin as fela, ThemeProvider } from 'olymp-fela';
 import View from 'olymp-collection/view';
 import Mediathek from 'olymp-cloudinary/views';
 import Nav from './nav';
+import Load from './animated';
 import Pages from './pages';
 // import Logo from 'olymp-fela/logo';
 
@@ -89,15 +92,27 @@ const pageSchema = {
   }
 };
 
+const baseColor = '#29539E';
+const Verifying = connect(({ apollo, location }) => ({
+  show:
+    (apollo && apollo.initial) ||
+    location.pathname === '/login' ||
+    location.pathname === '/logout'
+}))(p => (
+  <ThemeProvider theme={{ color: baseColor }}>
+    <ScreenLoader {...p} logo={<Load loading color="white" />} />
+  </ThemeProvider>
+));
+
 export default enhance(({ apps, pushPathname, app }) => (
   <ThemeProvider
-    key={apps.length}
     theme={{
-      color: (app && app.color) || '#3A1000'
+      color: (app && app.color) || baseColor
     }}
   >
     <Nav apps={apps}>
-      <SwitchPathname>
+      <Verifying />
+      <SwitchPathname key={apps.length}>
         <Match match="/" exact render={null} />
         <Match match="/media" exact render={Pages} />
         {apps.map(app => (

@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "npm link olymp-ui && node dev",
+    "lt": "lt --port 4000 --subdomain yiczottgql",
     "test": "echo \"Error: no test specified\" && exit 1",
     "logs": "sls logs -f graphql",
     "local": "sls offline start --port 4000",
@@ -42,6 +43,7 @@
   "devDependencies": {
     "algoliasearch": "^3.24.9",
     "auth0": "^2.9.1",
+    "cloudinary": "^1.9.1",
     "eslint-config-olymp": "^20.1.28",
     "jsonwebtoken": "^8.1.1",
     "jwks-rsa": "^1.2.1",

@@ -1,7 +1,13 @@
 import { findOne, updateOne, find } from 'olymp-api';
+import cloudinary from 'cloudinary';
 
 export default {
   typeDefs: `
+    type CloudinarySignature {
+      signature: String
+      folder: String
+      timestamp: Int
+    }
     input FileInput {
       id: ID
       appId: ID
@@ -44,6 +50,7 @@ export default {
       folder: String
     }
     extend type Query {
+      signUpload(folder: String, timestamp: Int!, callback: String): String
       file(id: ID): File
       fileList: [File!]
       fileTags(folder: String): [String]
@@ -54,6 +61,17 @@ export default {
   `,
   resolvers: {
     Query: {
+      signUpload: (source, args, { isAuthenticated }) => {
+        if (!isAuthenticated) {
+          throw new Error('Not allowed');
+        }
+        const { signature } = cloudinary.utils.sign_request(args, {
+          cloud_name: process.env.CLOUDINARY_CLOUDNAME,
+          api_key: process.env.CLOUDINARY_API_KEY,
+          api_secret: process.env.CLOUDINARY_API_SECRET
+        });
+        return signature;
+      },
       file: (source, args, { db, app }) =>
         db.collection('file').findOne({ id: args.id }),
       fileList: async (source, { query }, { db, app, user }) => {

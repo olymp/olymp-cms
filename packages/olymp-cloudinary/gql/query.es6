@@ -23,14 +23,14 @@ export default graphql(
   `,
   {
     options: ({ id, mediaId, query }) => ({
-      variables: { id: mediaId },
+      variables: { id: mediaId }
     }),
     props: ({ ownProps, data }) => ({
       ...ownProps,
       item: data.item,
-      data,
-    }),
-  },
+      data
+    })
+  }
 );
 
 export const queryMedias = graphql(
@@ -58,9 +58,9 @@ export const queryMedias = graphql(
     props: ({ ownProps, data }) => ({
       ...ownProps,
       items: data.items || [],
-      data,
-    }),
-  },
+      data
+    })
+  }
 );
 export const queryTags = graphql(
   gql`
@@ -76,37 +76,13 @@ export const queryTags = graphql(
               .split('/')
               .filter((x, i) => i !== 0)
               .join('/')
-          : undefined,
-      },
+          : undefined
+      }
     }),
     props: ({ ownProps, data }) => ({
       ...ownProps,
       fileTags: data.fileTags || [],
-      data,
-    }),
-  },
-);
-
-export const cloudinaryRequest = graphql(
-  gql`
-    query cloudinaryRequest {
-      cloudinaryRequest {
-        apiKey
-        url
-        signature
-        timestamp
-        folder
-      }
-    }
-  `,
-  {
-    options: () => ({
-      fetchPolicy: 'network-only',
-    }),
-    props: ({ ownProps, data }) => ({
-      ...ownProps,
-      refetchKey: data.refetch,
-      cloudinaryRequest: data.cloudinaryRequest,
-    }),
-  },
+      data
+    })
+  }
 );
