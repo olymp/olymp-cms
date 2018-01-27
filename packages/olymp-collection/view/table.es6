@@ -128,7 +128,7 @@ export default class CollectionView extends Component {
       <StyledTable
         columns={columns}
         dataSource={data}
-        onRowClick={item => onClick(item.id)}
+        onRow={item => onClick(item.id)}
       />
     );
   }

@@ -6,11 +6,11 @@ import { metricsObj, dimensionsObj } from '../../definitions';
 const AntTable = createComponent(
   ({ rowSelection }) => ({
     '& .ant-table-row': {
-      cursor: !!rowSelection && 'pointer',
-    },
+      cursor: !!rowSelection && 'pointer'
+    }
   }),
   p => <Table {...p} />,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 export default class TableChart extends Component {
@@ -43,7 +43,7 @@ export default class TableChart extends Component {
               return 0;
           }
         },
-        sortOrder: sortedInfo.columnKey === key && sortedInfo.order,
+        sortOrder: sortedInfo.columnKey === key && sortedInfo.order
       });
     });
 
@@ -54,15 +54,15 @@ export default class TableChart extends Component {
         columns={columns}
         dataSource={items.map((item, i) => ({
           ...item,
-          [`key-${dimensions.join('-')}`]: i,
+          [`key-${dimensions.join('-')}`]: i
         }))}
-        onRowClick={onSelect && (item => onSelect(item[xData]))}
+        onRow={onSelect && (item => onSelect(item[xData]))}
         rowSelection={
           onSelect && {
             selectedRowKeys: selected.map(selection =>
-              items.findIndex(item => item[xData] === selection),
+              items.findIndex(item => item[xData] === selection)
             ),
-            onSelect: item => onSelect(item[xData]),
+            onSelect: item => onSelect(item[xData])
           }
         }
         onChange={(pagination, filters, sorter) =>
