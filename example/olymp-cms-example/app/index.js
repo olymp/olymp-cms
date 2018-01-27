@@ -22,7 +22,6 @@ import View from 'olymp-collection/view';
 import Mediathek from 'olymp-cloudinary/views';
 import Nav from './nav';
 import Load from './animated';
-import Pages from './pages';
 // import Logo from 'olymp-fela/logo';
 
 export const plugins = [
@@ -114,24 +113,18 @@ export default enhance(({ apps, pushPathname, app }) => (
       <Verifying />
       <SwitchPathname key={apps.length}>
         <Match match="/" exact render={null} />
-        <Match match="/media" exact render={Pages} />
-        {apps.map(app => (
-          <Match
-            key={app.name}
-            match={`/${app.name}/media(/:id)`}
-            render={p => (
-              <Mediathek
-                id={p.id}
-                app={app.name}
-                onClick={id =>
-                  id
-                    ? pushPathname(`/${app.name}/media/${id}`)
-                    : pushPathname(`/${app.name}/media`)
-                }
-              />
-            )}
-          />
-        ))}
+        <Match
+          match="/media"
+          exact
+          render={p => (
+            <Mediathek
+              id={p.id}
+              onClick={id =>
+                id ? pushPathname(`/media/${id}`) : pushPathname(`/media`)
+              }
+            />
+          )}
+        />
         {apps.map(app =>
           [pageSchema, ...app.collections].map(collection => (
             <Match

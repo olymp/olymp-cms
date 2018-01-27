@@ -3,11 +3,6 @@ import cloudinary from 'cloudinary';
 
 export default {
   typeDefs: `
-    type CloudinarySignature {
-      signature: String
-      folder: String
-      timestamp: Int
-    }
     input FileInput {
       id: ID
       appId: ID
@@ -50,13 +45,13 @@ export default {
       folder: String
     }
     extend type Query {
-      signUpload(folder: String, timestamp: Int!, callback: String): String
+      signUpload(folder: String, timestamp: Int!, callback: String, ocr: String): String
       file(id: ID): File
       fileList: [File!]
       fileTags(folder: String): [String]
     }
     extend type Mutation {
-      file(data: FileInput!): File
+      file(id: ID, data: FileInput!, delete: Boolean): File
     }
   `,
   resolvers: {
@@ -74,23 +69,12 @@ export default {
       },
       file: (source, args, { db, app }) =>
         db.collection('file').findOne({ id: args.id }),
-      fileList: async (source, { query }, { db, app, user }) => {
-        const mongoQuery = {};
-        mongoQuery.state = { $ne: 'REMOVED' };
-        const all = await db
+      fileList: async (source, {}, { db, app, user }) =>
+        db
           .collection('file')
-          .find(mongoQuery)
-          .toArray();
-        all.map(async ({ id, secureUrl, placeholder, pages, ...x }, i) => {
-          await updateOne('file', x);
-          console.log(i);
-        });
-        return db
-          .collection('file')
-          .find(mongoQuery)
+          .find({ state: { $ne: 'REMOVED' } })
           .limit(100)
-          .toArray();
-      },
+          .toArray(),
       fileTags: (source, { folder }, { db, user }) => {
         if (!user) {
           return [];
@@ -114,43 +98,11 @@ export default {
       }
     },
     Mutation: {
-      file: (source, args, { db, app }) => {
+      file: (source, { data, id }, { db, app }) => {
         if (args.operationType === 'REMOVE') {
           args.input.state = 'REMOVED';
         }
-        return db
-          .collection('item')
-          .findOne({ id: args.input.id })
-          .then(item =>
-            /* setTimeout(() => {
-            if (args.operationType && args.operationType === 'REMOVE') {
-              return updateImage(
-                item.publicId,
-                args.input.tags,
-                args.input.source,
-                args.input.caption,
-                config,
-                true,
-              );
-            }
-
-            return updateImage(
-              item.publicId,
-              args.input.tags,
-              args.input.source,
-              args.input.caption,
-              config,
-            );
-          }, 10); */
-            db
-              .collection('item')
-              .updateOne(
-                { id: args.input.id },
-                { $set: args.input },
-                { upsert: true }
-              )
-              .then(() => db.collection('item').findOne({ id: args.input.id }))
-          );
+        return updateOne('file', data);
       }
     }
   }

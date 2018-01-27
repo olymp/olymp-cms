@@ -12,3 +12,8 @@ const access = [
     '#news.ortho': 'crud',
   }
 ];
+
+
+- Kalender in Nav, raus aus Collections
+- Mediathek aus Algolia Suche füttern inkl Text Inhalt
+- 

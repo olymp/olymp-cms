@@ -3,9 +3,22 @@ import { withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import Helmet from 'react-helmet';
 
+const retry = (func, amount = 10, interval = 1000) =>
+  new Promise((yay, nay) => {
+    setTimeout(() => {
+      if (func()) {
+        yay();
+      } else if (amount === 0) {
+        nay();
+      } else {
+        return retry(func, amount - 1, interval);
+      }
+    }, interval);
+  });
 @withApollo
 export default class Uploader extends Component {
   onClick = async () => {
+    await retry(() => !!window.cloudinary);
     const { client, app } = this.props;
     const timestamp = Math.round(new Date().getTime() / 1000);
     const { data } = await client.query({
@@ -29,9 +42,10 @@ export default class Uploader extends Component {
     if (!signUpload) {
       throw new Error('No signature');
     }
-    window.cloudinary.openUploadWidget(
+    const w = window.cloudinary.openUploadWidget(
       {
         cloud_name: 'djyenzorc',
+        // ocr: 'adv_ocr',
         sources: ['local', 'url', 'dropbox', 'image_search'],
         folder: `/${app}`,
         api_key: '179442986443332',
@@ -68,6 +82,11 @@ export default class Uploader extends Component {
         console.log(error, result);
       }
     );
+    const iframe = document.getElementsByTagName('iframe')[0];
+    console.log(iframe);
+    const innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    const dropper = innerDoc.getElementsByClassName('drag_area')[0];
+    console.log(w, dropper);
   };
   render() {
     return (

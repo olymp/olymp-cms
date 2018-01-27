@@ -5,20 +5,13 @@ import { createComponent } from 'react-fela';
 import { SecondarySidebar } from 'olymp-ui/menu/trio';
 import { Drawer } from 'olymp-ui';
 import Menu, { StackedMenu } from 'olymp-ui/menu';
-import AntMenu from 'olymp-antd/menu';
-import {
-  FaChevronLeft,
-  FaPictureO,
-  FaClose,
-  FaSave,
-  FaPlus
-} from 'olymp-icons';
+import { FaChevronLeft, FaPictureO } from 'olymp-icons';
 import { sortBy } from 'lodash';
 import { queryMedias } from '../gql';
 import Gallery from './gallery';
-import Upload from '../upload';
 import Detail from '../detail';
 import Image from '../image';
+import Uploader from '../uploader/uploader';
 // import Dragzone from '../components/dragzone';
 
 const EMPTY = 'Keine Tags';
@@ -285,18 +278,7 @@ class CloudinaryView extends Component {
       <Menu
         key={keys.join('|')}
         header={
-          <Menu.Item
-            large
-            onClick={goRoot}
-            icon={<FaPictureO />}
-            extra={
-              <Menu.Extra onClick={() => {}} disabled={!!keys.length} large>
-                <Upload app={app}>
-                  <FaPlus />
-                </Upload>
-              </Menu.Extra>
-            }
-          >
+          <Menu.Item large onClick={goRoot} icon={<FaPictureO />}>
             Mediathek
           </Menu.Item>
         }
@@ -306,6 +288,8 @@ class CloudinaryView extends Component {
             Zurück
           </Menu.Item>
         )}
+
+        <Uploader onSuccess={x => console.log('SUCCESS', x)} />
         {children}
       </Menu>
     );
@@ -313,7 +297,6 @@ class CloudinaryView extends Component {
   render() {
     const {
       tags,
-      collapsed,
       setCollapsed,
       selection,
       tree,
@@ -323,8 +306,9 @@ class CloudinaryView extends Component {
       multi,
       value,
       onChange,
-      onClose,
+      onClose
     } = this.props;
+    const collapsed = false;
 
     const [key0, key1] = tags;
     const [app, folder] = key0 ? key0.split('/') : [];
@@ -351,89 +335,54 @@ class CloudinaryView extends Component {
               ? selectedItems
               : filteredItems
           }
+          marginRight={collapsed ? 72 : 300}
           onClick={this.onClick}
           selection={selection}
           isActive={({ id }) => selection.indexOf(id) !== -1}
           onRemove={({ id }) => setSelection(selection.filter(x => id !== x))}
         />
-        <Drawer
-          open
-          collapsed={collapsed}
-          dim={false}
-          right
-          width={collapsed ? 72 : 240}
-          onMouseEnter={() => setCollapsed(false)}
-          onMouseLeave={() => setCollapsed(true)}
-        >
-          <Menu
+        {!!selectedItems.length && (
+          <Drawer
+            open
             collapsed={collapsed}
-            header={
-              <Menu.Item
-                large
-                icon={collapsed && <Label>{selectedItems.length}</Label>}
-              >
-                Bearbeiten
-              </Menu.Item>
-            }
-            headerInverted
-            headerColor
+            dim={false}
+            right
+            width={collapsed ? 72 : 300}
+            onMouseEnter={() => setCollapsed(false)}
+            onMouseLeave={() => setCollapsed(true)}
           >
-            <Menu.Space>
-              {collapsed &&
-                (value || selectedItems || []).map(v => (
-                  <Menu.Item
-                    key={v.id}
-                    large
-                    icon={<Image value={v} width={60} height={60} />}
-                  />
-                ))}
-              <Detail
-                value={value || selectedItems || []}
-                multi={multi}
-                editable={!inModal}
-                collapsed={collapsed}
-                onRemove={({ id }) =>
-                  setSelection(selection.filter(x => id !== x))
-                }
-              />
-            </Menu.Space>
-          </Menu>
-          {!collapsed && (
             <Menu
-              color
-              inverted
-              collapsed
+              collapsed={collapsed}
               header={
                 <Menu.Item large icon={<Label>{selectedItems.length}</Label>}>
-                  Seite bearbeiten
+                  Bearbeiten
                 </Menu.Item>
               }
-              headerColor="dark4"
-              headerInverted
+              // headerInverted
+              // headerColor
             >
-              {/* <AntMenu.Tooltip onClick={() => {}} icon={<FaThemeisle />}>
-                Beni, hier soll der Speicher-Button hin der seltsamerweise nun
-                weg ist! ;)
-            </AntMenu.Tooltip> */}
-              {/* <AntMenu.Tooltip onClick={() => {}} icon={<FaOptinMonster />}>
-                .. und hier könnte löschen hin anstelle der Checkbox!
-              </AntMenu.Tooltip> */}
-              {!!onChange && (
-                <AntMenu.Tooltip
-                  onClick={() => onChange(selectedItems)}
-                  icon={<FaSave />}
-                >
-                  Speichern
-                </AntMenu.Tooltip>
-              )}
-              {!!onClose && (
-                <AntMenu.Tooltip onClick={onClose} icon={<FaClose />}>
-                  Abbrechen
-                </AntMenu.Tooltip>
-              )}
+              <Menu.Space>
+                {collapsed &&
+                  (value || selectedItems || []).map(v => (
+                    <Menu.Item
+                      key={v.id}
+                      large
+                      icon={<Image value={v} width={60} height={60} />}
+                    />
+                  ))}
+                <Detail
+                  value={value || selectedItems || []}
+                  multi={multi}
+                  editable={!inModal}
+                  collapsed={collapsed}
+                  onRemove={({ id }) =>
+                    setSelection(selection.filter(x => id !== x))
+                  }
+                />
+              </Menu.Space>
             </Menu>
-          )}
-        </Drawer>
+          </Drawer>
+        )}
       </SecondarySidebar>
     );
   }

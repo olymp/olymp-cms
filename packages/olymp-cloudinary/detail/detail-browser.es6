@@ -72,7 +72,7 @@ export default ({ multi, item, form, groupedTags, value, selectedTags }) => {
         </Form.Item>
       )}
 
-      <Menu.List title="Bild">
+      <Menu.List>
         <Form.Item label="Ordner" {...FormForFullLayout}>
           {form.getFieldDecorator(`${item.id}.folder`, {
             initialValue: item.folder
@@ -106,7 +106,7 @@ export default ({ multi, item, form, groupedTags, value, selectedTags }) => {
       <Menu.List title="Tagcloud">
         <TagContainer selectedTags={selectedTags} form={form} />
       </Menu.List>
-      {!multi && getImageInfo(item)}
+      {/*! multi && getImageInfo(item) */}
     </Form>
   );
 };

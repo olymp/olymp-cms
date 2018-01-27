@@ -1,6 +1,15 @@
 import React from 'react';
 import Menu from 'olymp-ui/menu';
-import { FaSearch, FaPowerOff, FaCog, FaImage, FaBook, FaCubes } from 'icon88';
+import {
+  FaSearch,
+  FaPowerOff,
+  FaCog,
+  FaImage,
+  FaBook,
+  FaCubes,
+  FaCalendar,
+  FaDatabase
+} from 'icon88';
 import { Avatar } from 'olymp-ui';
 import { getAuth } from 'olymp-auth';
 import Sidebar from 'olymp-ui/menu/trio';
@@ -49,15 +58,29 @@ export default enhance(
           >
             Dashboard
           </Menu.Item>
+          <Menu.Item
+            active={pathname === `/media`}
+            icon={<FaImage />}
+            onClick={() => pushPathname(`/media`)}
+          >
+            Mediathek
+          </Menu.Item>
+          <Menu.Item
+            active={pathname === `/calendar`}
+            icon={<FaCalendar />}
+            onClick={() => pushPathname(`/calendar`)}
+          >
+            Kalender
+          </Menu.Item>
+          <Menu.Item
+            active={pathname === `/data`}
+            icon={<FaDatabase />}
+            onClick={() => pushPathname(`/data`)}
+          >
+            Datenbank
+          </Menu.Item>
           {apps.map(app => (
             <Menu.List title={app.name} key={app.id} extra={<FaCog />}>
-              <Menu.Item
-                active={pathname === `/${app.name}/media`}
-                icon={<FaImage />}
-                onClick={() => pushPathname(`/${app.name}/media`)}
-              >
-                Mediathek
-              </Menu.Item>
               <Menu.Item
                 active={pathname === `/${app.name}/page`}
                 icon={<FaBook />}

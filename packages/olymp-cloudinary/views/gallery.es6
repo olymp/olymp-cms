@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import {
   CellMeasurer,
-  CellMeasurerCache,
+  CellMeasurerCache
 } from 'react-virtualized/dist/commonjs/CellMeasurer';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller';
 import Masonry, {
-  createCellPositioner,
+  createCellPositioner
 } from 'react-virtualized/dist/commonjs/Masonry';
 import Thumb from '../components/thumb';
 
@@ -18,7 +18,7 @@ const Item = ({ style, item, isActive, onClick, onRemove, width }) => (
       display: 'flex',
       flexDirection: 'column',
       wordBreak: 'break-all',
-      width,
+      width
     }}
   >
     <Thumb
@@ -36,14 +36,14 @@ const Item = ({ style, item, isActive, onClick, onRemove, width }) => (
   </div>
 );
 
-const columnWidth = 200;
-const columnHeight = 200;
+const columnWidth = 150;
+const columnHeight = 150;
 const gutterSize = 0;
 export default class GridExample extends PureComponent {
   height = 0;
 
   static defaultProps = {
-    useBodyScroll: true,
+    useBodyScroll: true
   };
 
   constructor(props) {
@@ -54,7 +54,7 @@ export default class GridExample extends PureComponent {
     this.cache = new CellMeasurerCache({
       defaultHeight: columnHeight,
       defaultWidth: columnWidth,
-      fixedWidth: true,
+      fixedWidth: true
     });
   }
 
@@ -90,7 +90,7 @@ export default class GridExample extends PureComponent {
         cellMeasurerCache: this.cache,
         columnCount: this.columnCount,
         columnWidth: this.columnWidth,
-        spacer: gutterSize,
+        spacer: gutterSize
       });
     }
   };
@@ -141,7 +141,7 @@ export default class GridExample extends PureComponent {
     this.cellPositioner.reset({
       columnCount: this.columnCount,
       columnWidth: this.columnWidth,
-      spacer: gutterSize,
+      spacer: gutterSize
     });
   };
 
@@ -168,14 +168,14 @@ export default class GridExample extends PureComponent {
   };
 
   render() {
-    const { useBodyScroll, selection } = this.props;
+    const { useBodyScroll, selection, marginRight } = this.props;
     if (!useBodyScroll) {
       return this.renderAutoSizer({ height: this.height });
     }
     return (
       <div
         style={{
-          marginRight: 72,
+          marginRight: marginRight || 72
         }}
       >
         <WindowScroller

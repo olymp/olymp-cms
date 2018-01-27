@@ -37,6 +37,7 @@
     "olymp-utils": "^19.1.14",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-dropbox-chooser": "0.0.5",
     "react-instantsearch": "^4.4.2",
     "react-instantsearch-theme-algolia": "^4.4.2"
   },
@@ -58,11 +59,17 @@
   "olymp": {
     "app": "./app",
     "server": "./server",
-    "plugins": ["less", "babel"],
+    "plugins": [
+      "less",
+      "babel"
+    ],
     "alias": {
       "olymp-icons": "icon88"
     },
-    "externals": ["icon88", "hashtax"],
+    "externals": [
+      "icon88",
+      "hashtax"
+    ],
     "transform": {
       "icon88": {
         "transform": "icon88/lib/${member}",
