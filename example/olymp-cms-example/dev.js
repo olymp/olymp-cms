@@ -22,7 +22,8 @@ require('olymp-webpack').dev([
     plugins: ['olymp-webpack-babel', 'olymp-webpack-less', 'olymp-webpack-pwa'],
     env,
     proxy: {
-      '/graphql': `http://localhost:${port + 1}`
+      '/graphql': `http://localhost:${port + 1}`,
+      '/voyager': `http://localhost:${port + 1}`
     },
     static: path.resolve(__dirname, 'public'),
     port

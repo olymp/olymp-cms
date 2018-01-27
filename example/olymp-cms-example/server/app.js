@@ -59,7 +59,7 @@ const resolvers = {
   }
 };
 
-export const { server, playground } = api({
+export const { server, playground, voyager } = api({
   mongoUri: process.env.MONGODB_URI,
   typeDefs: Object.keys(modules).reduce(
     (result, key) => `${result}\n${modules[key].typeDefs || ''}`,

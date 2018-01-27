@@ -25,3 +25,10 @@ functions:
         path: graphql
         method: get
         cors: true
+  voyager:
+    handler: app.voyager
+    events:
+    - http:
+        path: voyager
+        method: get
+        cors: true
