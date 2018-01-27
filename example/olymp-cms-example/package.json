@@ -49,7 +49,7 @@
     "eslint-config-olymp": "^20.1.29",
     "jsonwebtoken": "^8.1.1",
     "jwks-rsa": "^1.2.1",
-    "olymp-api": "^20.1.39",
+    "olymp-api": "^20.1.40",
     "olymp-neo": "0.0.6",
     "olymp-webpack": "^20.1.29",
     "olymp-webpack-babel": "^20.1.28",
