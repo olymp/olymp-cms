@@ -1,7 +1,7 @@
 {
   "name": "orgilla-cms",
   "private": true,
-  "version": "20.2.0",
+  "version": "20.2.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -24,8 +24,8 @@
     "olymp-apollo": "^20.1.37",
     "olymp-async": "^20.1.22",
     "olymp-auth": "^20.1.35",
-    "olymp-cloudinary": "^20.2.0",
-    "olymp-collection": "^20.2.0",
+    "olymp-cloudinary": "^20.2.1",
+    "olymp-collection": "^20.2.1",
     "olymp-crypt": "^20.1.0",
     "olymp-fela": "^20.1.31",
     "olymp-google": "^20.1.22-0",
