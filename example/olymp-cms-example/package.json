@@ -53,7 +53,7 @@
     "olymp-neo": "0.0.6",
     "olymp-webpack": "^20.1.29",
     "olymp-webpack-babel": "^20.1.28",
-    "olymp-webpack-lambda": "^20.1.22",
+    "olymp-webpack-lambda": "^20.1.30",
     "olymp-webpack-less": "^20.1.29",
     "olymp-webpack-pwa": "^20.1.10"
   },
