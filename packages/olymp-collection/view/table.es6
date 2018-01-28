@@ -76,16 +76,22 @@ const getFilters = (items, field) => {
 const enhance = compose(
   withState('activeFilter', 'setActiveFilter'),
   withState('filter', 'setFilter', {}),
-  withPropsOnChange(['collection'], ({ collection }) => ({
-    columns: (collection.columns || Object.keys(collection.fields))
-      // .sort((a, b) => sortValue(b, collection) - sortValue(a, collection))
-      .map(name => ({
-        key: name,
-        title: collection.fields[name].label,
-        dataIndex: name,
-        // sorter: getSorter(field),
-        // filters: getFilters(items, field),
-        /* filterDropdown: field.innerType.name === 'String' && (
+  withPropsOnChange(
+    ['collection'],
+    ({ collection }) =>
+      console.log(collection) || {
+        columns: (collection.columns || Object.keys(collection.fields))
+          // .sort((a, b) => sortValue(b, collection) - sortValue(a, collection))
+          .map(fieldName => {
+            const name = fieldName.split('.')[0];
+
+            return {
+              key: name,
+              title: collection.fields[name].label,
+              dataIndex: name,
+              // sorter: getSorter(field),
+              // filters: getFilters(items, field),
+              /* filterDropdown: field.innerType.name === 'String' && (
               <Input
                 placeholder="Filter"
                 value={filter[field.name] ? filter[field.name] : ''}
@@ -99,9 +105,11 @@ const enhance = compose(
             onFilterDropdownVisibleChange: visible =>
               setActiveFilter(visible && field.name),
             onFilter: (value, item) => item[field.name] === value, */
-        render: value => value
-      }))
-  })),
+              render: value => value
+            };
+          })
+      }
+  ),
   withPropsOnChange(['items', 'filter'], ({ items, filter }) => ({
     data: items
       .filter(item =>
