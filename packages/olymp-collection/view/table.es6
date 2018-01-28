@@ -6,10 +6,24 @@ import { compose, withPropsOnChange, withState } from 'recompose';
 import isAfter from 'date-fns/isAfter';
 
 const StyledTable = createComponent(
-  () => ({
+  ({ theme }) => ({
+    borderLeft: `1px solid ${theme.dark4}`,
+    '& .ant-table-thead > tr > th': {
+      backgroundColor: '#F4F5F7'
+    },
+    '& thead > tr': {
+      height: 80,
+      '& th': {
+        fontSize: '115%',
+        fontWeight: 300
+      }
+    },
     '& td': {
       minWidth: 50,
       maxWidth: 200
+    },
+    '& .ant-pagination': {
+      margin: theme.space3
     }
   }),
   p => <Table {...p} />,
