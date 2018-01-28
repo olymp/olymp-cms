@@ -2,11 +2,11 @@ import React from 'react';
 import { withTheme } from 'react-fela';
 import { compose, withPropsOnChange } from 'recompose';
 
-const icon = ({ color, width, height, size, id, ...rest }) => (
+const icon = ({ color, width, height, size, id, className }) => (
   <svg
     width={size || width}
     height={size || height}
-    {...rest}
+    className={className}
     viewBox="0 0 1000 1000"
   >
     <defs>
@@ -88,10 +88,9 @@ export default compose(
       .toString(36)
       .slice(-5),
     color:
-      color === true
-        ? theme.color
-        : typeof color === 'string'
-          ? theme[color] || color
-          : theme.inverted ? theme.light : theme.dark
+      (color === true && theme.color) ||
+      (typeof color === 'string' && (theme[color] || color)) ||
+      (!!theme.inverted && theme.light) ||
+      theme.dark
   }))
 )(icon);
