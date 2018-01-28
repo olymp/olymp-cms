@@ -7,13 +7,15 @@ import { Drawer } from 'olymp-ui';
 import Menu, { StackedMenu } from 'olymp-ui/menu';
 import { FaChevronLeft, FaPictureO } from 'olymp-icons';
 import { sortBy } from 'lodash';
+import Uploader from 'olymp-antd/upload';
+import enhanceUpload from 'olymp-antd/upload/cloudinary';
 import { queryMedias } from '../gql';
 import Gallery from './gallery';
 import Detail from '../detail';
 import Image from '../image';
-import Uploader from '../uploader/uploader';
 // import Dragzone from '../components/dragzone';
 
+const Upload = enhanceUpload(Uploader);
 const EMPTY = 'Keine Tags';
 const TRASH = 'Papierkorb';
 const GENERAL = 'Allgemein';
@@ -289,7 +291,7 @@ class CloudinaryView extends Component {
           </Menu.Item>
         )}
 
-        <Uploader onSuccess={x => console.log('SUCCESS', x)} />
+        <Upload onSuccess={x => console.log('SUCCESS', x)} />
         {children}
       </Menu>
     );
