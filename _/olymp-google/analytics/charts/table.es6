@@ -56,7 +56,7 @@ export default class TableChart extends Component {
           ...item,
           [`key-${dimensions.join('-')}`]: i
         }))}
-        onRow={onSelect && (item => onSelect(item[xData]))}
+        onRowClick={onSelect && (item => onSelect(item[xData]))}
         rowSelection={
           onSelect && {
             selectedRowKeys: selected.map(selection =>

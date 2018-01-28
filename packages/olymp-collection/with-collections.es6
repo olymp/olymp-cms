@@ -3,7 +3,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { sortBy, get } from 'lodash';
 import { compose, withPropsOnChange } from 'recompose';
-import { getSpecialFields } from './utils';
+import getSpecialFields from './get-special-fields';
 
 const enhance = compose(
   graphql(
@@ -27,7 +27,7 @@ const enhance = compose(
           }
         }
       }
-    `,
+    `
   ),
   withPropsOnChange(['data'], ({ data }) => ({
     list: sortBy(
@@ -37,12 +37,12 @@ const enhance = compose(
               (x.interfaces || []).filter(
                 y =>
                   y.name === 'CollectionType' ||
-                  y.name === 'CollectionInterface',
-              ).length,
+                  y.name === 'CollectionInterface'
+              ).length
           )
         : [],
-      ['order', 'name'],
-    ).map(collection => getSpecialFields(collection)),
+      ['order', 'name']
+    ).map(collection => getSpecialFields(collection))
   })),
   withPropsOnChange(['list'], ({ list = [] }) => {
     const group = () => {
@@ -67,7 +67,7 @@ const enhance = compose(
           const name = get(
             collection,
             get(collection, 'specialFields.label'),
-            collection.name,
+            collection.name
           );
 
           if (!groups[name]) {
@@ -92,9 +92,9 @@ const enhance = compose(
     };
 
     return {
-      group: group(),
+      group: group()
     };
-  }),
+  })
 );
 
 export default WrappedComponent => {

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Drawer } from 'olymp-ui';
 import { SecondarySidebar } from 'olymp-ui/menu/trio';
 import Menu, { StackedMenu } from 'olymp-ui/menu';
 import { createComponent } from 'react-fela';
 import {
-  FaDatabase,
+  FaCube,
   FaTrashO,
   FaArchive,
   FaClockO,
@@ -19,9 +18,9 @@ import { compose, withPropsOnChange, withState } from 'recompose';
 import isAfter from 'date-fns/isAfter';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import { Drawer } from 'olymp-antd/form';
 import Calendar from './calendar';
 import Table from './table';
-import Detail from './detail';
 
 const FlexContainer = createComponent(
   ({ theme }) => ({
@@ -59,6 +58,7 @@ const enhance = compose(
       query documentList($type: String, $app: String) {
         documentList(type: $type, app: $app) {
           id
+          name
           raw
           state
           image {
@@ -137,11 +137,7 @@ export default class CollectionView extends Component {
         header={
           <Menu.Item
             icon={
-              collection.icon ? (
-                <Icon type={collection.icon} style={{ fontSize: 32 }} />
-              ) : (
-                <FaDatabase />
-              )
+              collection.icon ? <Icon type={collection.icon} /> : <FaCube />
             }
             large
             extra={
@@ -211,18 +207,8 @@ export default class CollectionView extends Component {
   };
 
   render() {
-    const {
-      collection,
-      fieldNames,
-      id,
-      refetchQuery,
-      isLoading,
-      keys,
-      items,
-      onClick
-    } = this.props;
+    const { collection, id, isLoading, keys, items, onClick } = this.props;
     const isEvent = !!get(collection, 'mapping.event');
-    const activeItem = items.find(x => x.id === id) || {};
 
     return (
       <SecondarySidebar
@@ -246,30 +232,11 @@ export default class CollectionView extends Component {
           )}
         </FlexContainer>
 
-        <Drawer open={!!id} width={475} right onClose={() => onClick()}>
-          <Menu
-            header={
-              id === 'new' ? (
-                <Menu.Item large>{collection.label} anlegen</Menu.Item>
-              ) : (
-                <Menu.Item large>
-                  {get(activeItem, 'list.title')}
-                  <small>{collection.label} bearbeiten</small>
-                </Menu.Item>
-              )
-            }
-            headerColor
-            headerInverted
-          >
-            <Detail
-              id={id === 'new' ? null : id}
-              key={id || 'new'}
-              refetchQuery={refetchQuery}
-              fieldNames={fieldNames}
-              collection={collection}
-            />
-          </Menu>
-        </Drawer>
+        <Drawer
+          collection={collection}
+          onClose={() => onClick()}
+          item={items.find(x => x.id === id) || {}}
+        />
       </SecondarySidebar>
     );
   }

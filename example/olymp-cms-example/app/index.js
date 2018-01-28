@@ -77,7 +77,7 @@ const enhance = compose(
 
 const pageSchema = {
   label: 'Seite',
-  icon: 'page',
+  icon: 'file',
   name: 'page',
   fields: {
     name: {
