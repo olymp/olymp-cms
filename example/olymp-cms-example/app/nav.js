@@ -79,30 +79,39 @@ export default enhance(
           >
             Datenbank
           </Menu.Item>
-          {apps.map(app => (
-            <Menu.List title={app.name} key={app.id} extra={<FaCog />}>
-              <Menu.Item
-                active={pathname === `/${app.name}/page`}
-                icon={<FaBook />}
-                onClick={() => pushPathname(`/${app.name}/page`)}
-              >
-                Seiten
-              </Menu.Item>
-              {app.collections.map(collection => (
+
+          <Menu.Divider />
+
+          <div style={{ overflow: 'auto' }}>
+            {apps.map(app => (
+              <Menu.List title={app.name} key={app.id} extra={<FaCog />}>
                 <Menu.Item
-                  key={collection.name}
-                  active={pathname === '/'}
+                  active={pathname === `/${app.name}/page`}
                   icon={<FaBook />}
-                  onClick={() =>
-                    pushPathname(`/${app.name}/${collection.name}`)
-                  }
+                  onClick={() => pushPathname(`/${app.name}/page`)}
                 >
-                  {collection.label}
+                  Seiten
                 </Menu.Item>
-              ))}
-            </Menu.List>
-          ))}
+                {app.collections.map(collection => (
+                  <Menu.Item
+                    key={collection.name}
+                    active={pathname === '/'}
+                    icon={<FaBook />}
+                    onClick={() =>
+                      pushPathname(`/${app.name}/${collection.name}`)
+                    }
+                  >
+                    {collection.label}
+                  </Menu.Item>
+                ))}
+              </Menu.List>
+            ))}
+          </div>
+
+          <Menu.Divider />
+
           <Menu.Space />
+
           <Menu.Item
             onClick={() => {
               setSearchText('');
