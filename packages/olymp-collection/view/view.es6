@@ -19,7 +19,6 @@ import isAfter from 'date-fns/isAfter';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Drawer } from 'olymp-antd/form';
-import Calendar from './calendar';
 import Table from './table';
 
 const FlexContainer = createComponent(
@@ -208,7 +207,6 @@ export default class CollectionView extends Component {
 
   render() {
     const { collection, id, isLoading, keys, items, onClick } = this.props;
-    const isEvent = !!get(collection, 'mapping.event');
 
     return (
       <SecondarySidebar
@@ -222,17 +220,11 @@ export default class CollectionView extends Component {
         }
       >
         <FlexContainer>
-          {isEvent ? (
-            <Calendar {...this.props} />
-          ) : (
-            <Table
-              {...this.props}
-              items={items.filter(x => x.state === (keys[0] || 'PUBLISHED'))}
-            />
-          )}
+          <Table {...this.props} />
         </FlexContainer>
 
         <Drawer
+          layout="horizontal"
           collection={collection}
           onClose={() => onClick()}
           item={items.find(x => x.id === id) || {}}
