@@ -72,7 +72,7 @@ export default {
     }
     extend type Query {
       document(id: ID!): Document
-      documentList(type: String, app: String, state: [DOCUMENT_STATE]): [Document]!
+      documentList(type: [String], app: String, state: [DOCUMENT_STATE]): [Document]!
     }
     extend type Mutation {
       document(id: ID, data: Json!): Document
@@ -118,7 +118,11 @@ export default {
     Query: {
       document: (_, { id }) => findOne('document', id),
       documentList: (_, { type: _type, app: _appId, state = ['PUBLISHED'] }) =>
-        find('document', { _type, _appId, state: { $in: state } }).then(x =>
+        find('document', { 
+          _type: (_type ? { $in: state } : { $ne: null }), 
+          _appId, 
+          state: { $in: state } 
+        }).then(x =>
           x.map(i => ({
             ...i,
             type: i._type,
