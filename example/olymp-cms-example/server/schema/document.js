@@ -119,7 +119,7 @@ export default {
       document: (_, { id }) => findOne('document', id),
       documentList: (_, { type: _type, app: _appId, state = ['PUBLISHED'] }) =>
         find('document', { 
-          _type: (_type ? { $in: state } : { $ne: null }), 
+          _type: (_type ? { $in: _type } : { $ne: null }), 
           _appId, 
           state: { $in: state } 
         }).then(x =>

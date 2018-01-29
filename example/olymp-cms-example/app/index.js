@@ -125,26 +125,16 @@ export default enhance(({ apps, pushPathname, app }) => (
             />
           )}
         />
-        {apps.map(app =>
-          [pageSchema, ...app.collections].map(collection => (
-            <Match
-              key={collection.name}
-              match={`/${app.name}/${collection.name}(/:id)`}
-              render={p => (
-                <View
-                  id={p.id}
-                  collection={collection}
-                  app={app.name}
-                  onClick={id =>
-                    id
-                      ? pushPathname(`/${app.name}/${collection.name}/${id}`)
-                      : pushPathname(`/${app.name}/${collection.name}`)
-                  }
-                />
-              )}
-            />
-          ))
-        )}
+
+        {apps.map(a => (
+          <Match
+            key={a.name}
+            match={`/${a.name}/collections(/:collectionsString)`}
+            render={() => (
+              <View collections={[pageSchema, ...a.collections]} app={a.name} />
+            )}
+          />
+        ))}
         <Match component={Error} />
       </SwitchPathname>
     </Nav>

@@ -88,7 +88,7 @@ export default enhance(
                 <Menu.Item
                   active={pathname === `/${app.name}/page`}
                   icon={<FaBook />}
-                  onClick={() => pushPathname(`/${app.name}/page`)}
+                  onClick={() => pushPathname(`/${app.name}/collections/page`)}
                 >
                   Seiten
                 </Menu.Item>
@@ -98,7 +98,9 @@ export default enhance(
                     active={pathname === '/'}
                     icon={<FaBook />}
                     onClick={() =>
-                      pushPathname(`/${app.name}/${collection.name}`)
+                      pushPathname(
+                        `/${app.name}/collections/${collection.name}`
+                      )
                     }
                   >
                     {collection.label}

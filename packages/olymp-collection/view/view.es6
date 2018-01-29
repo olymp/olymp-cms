@@ -1,62 +1,65 @@
 import React, { Component } from 'react';
 import { SecondarySidebar } from 'olymp-ui/menu/trio';
-import Menu, { StackedMenu } from 'olymp-ui/menu';
-import { createComponent } from 'react-fela';
-import {
-  FaCube,
-  FaTrashO,
-  FaArchive,
-  FaClockO,
-  FaPlus,
-  FaAngleRight,
-  FaChevronLeft
-} from 'olymp-icons';
-import { Image } from 'olymp-cloudinary';
-import { get } from 'lodash';
+import Menu from 'olymp-ui/menu';
+import { FaCube, FaTrashO, FaArchive, FaClockO, FaEye } from 'olymp-icons';
 import { Icon } from 'antd';
-import { compose, withPropsOnChange, withState } from 'recompose';
-import isAfter from 'date-fns/isAfter';
+import { compose, withPropsOnChange, withState, withProps } from 'recompose';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Drawer } from 'olymp-antd/form';
+import { get } from 'lodash';
+import Calendar from 'olymp-ui/calendar';
+import { withRouting } from 'olymp-router';
+import { isAfter } from 'date-fns';
 import Table from './table';
 
-const FlexContainer = createComponent(
-  ({ theme }) => ({
-    position: 'relative',
-    hasFlex: {
-      display: 'flex',
-      flex: '1 1 0%',
-      flexDirection: 'column'
-    },
-    '> .rbc-calendar': {
-      padding: theme.space3
-    },
-    '> div': {
-      hasFlex: {
-        flex: '1 1 0%'
-      },
-      height: 'auto !important',
-      overflow: 'auto',
-      '> .rbc-toolbar': {
-        '> .rbc-toolbar-label': {
-          color: theme.color,
-          fontWeight: 200,
-          fontSize: '200%'
+const enhance = compose(
+  withRouting,
+  withState('states', 'setStates', ['PUBLISHED']),
+  withState('date', 'setDate', new Date()),
+  withPropsOnChange(['collectionsString'], ({ collectionsString }) => ({
+    selected: collectionsString.split(',')
+  })),
+  withProps(({ pushPathname, app, selected, states, setStates }) => ({
+    onSelectCollection: (e, name) => {
+      if (e.shiftKey) {
+        let newSelected;
+
+        if (selected.includes(name)) {
+          newSelected = selected.filter(k => k !== name);
+        } else {
+          newSelected = [...selected, name];
         }
+        if (!newSelected.length) newSelected = selected;
+
+        pushPathname(`/${app}/collections/${newSelected.join(',')}`);
+      } else {
+        pushPathname(`/${app}/collections/${name}`);
+      }
+    },
+    onSelectState: (e, state) => {
+      if (e.shiftKey) {
+        let newStates;
+
+        if (states.includes(state)) {
+          newStates = states.filter(k => k !== state);
+        } else {
+          newStates = [...states, state];
+        }
+        if (!newStates.length) newStates = ['PUBLISHED'];
+
+        setStates(newStates);
+      } else {
+        setStates([state]);
       }
     }
-  }),
-  'div'
-);
-
-const enhance = compose(
-  withState('keys', 'setKeys', []),
+  })),
   graphql(
     gql`
-      query documentList($type: String, $app: String) {
+      query documentList($type: [String], $app: String) {
         documentList(type: $type, app: $app) {
           id
+          type
           name
           raw
           state
@@ -79,9 +82,9 @@ const enhance = compose(
       }
     `,
     {
-      options: ({ collection, app }) => ({
+      options: ({ selected, app }) => ({
         variables: {
-          type: collection.name,
+          type: selected,
           app
         }
       }),
@@ -92,143 +95,109 @@ const enhance = compose(
       })
     }
   ),
-  withPropsOnChange(['items'], ({ items = [] }) => {
-    const startField = null;
-    const endField = null;
-    return {
-      items: startField
-        ? items.map(item => ({
-            ...item,
-            state:
-              item.state === 'PUBLISHED' &&
-              !isAfter(item[endField || startField], new Date())
-                ? 'EXPIRED'
-                : 'PUBLISHED'
-          }))
-        : items
-    };
-  }),
-  withPropsOnChange(
-    ['items', 'id', 'keys'],
-    ({ items = [], onClick, id, keys }) => ({
-      menuItems: items
-        .filter(x => x.state === (keys[0] || 'PUBLISHED'))
-        .map(item => ({
-          key: item.id,
-          image: item.image,
-          list: item.list,
-          color: item.color,
-          active: item.id === id,
-          onClick: () => onClick(item.id)
-        }))
-    })
-  )
+  withPropsOnChange(['items'], ({ items = [], date }) => ({
+    items: items.map(
+      item =>
+        item.event
+          ? {
+              ...item,
+              state:
+                item.state === 'PUBLISHED' &&
+                !!item.event.end &&
+                !isAfter(item.event.end, new Date(date))
+                  ? 'EXPIRED'
+                  : 'PUBLISHED'
+            }
+          : item
+    )
+  }))
 );
 
 @enhance
 export default class CollectionView extends Component {
-  renderMenu = () => {
-    const { collection, menuItems, updateQuery, keys, setKeys } = this.props;
-    const isEvent = !!get(collection, 'mapping.event');
-
-    return (
-      <Menu
-        header={
-          <Menu.Item
-            icon={
-              collection.icon ? <Icon type={collection.icon} /> : <FaCube />
-            }
-            large
-            extra={
-              <Menu.Extra
-                onClick={() =>
-                  updateQuery({ [`@${collection.name.toLowerCase()}`]: 'new' })
-                }
-                disabled={!!keys.length}
-                large
-              >
-                <FaPlus />
-              </Menu.Extra>
-            }
-          >
-            {collection.label}
-          </Menu.Item>
-        }
-      >
-        {!!keys.length && (
-          <Menu.Item icon={<FaChevronLeft />} onClick={() => setKeys([])}>
-            Zurück
-          </Menu.Item>
-        )}
-        {!keys.length &&
-          !!isEvent && (
-            <Menu.Item
-              icon={<FaClockO />}
-              extra={<FaAngleRight />}
-              onClick={() => setKeys(['EXPIRED'])}
-            >
-              Abgelaufen
-            </Menu.Item>
-          )}
-        {!keys.length && (
-          <Menu.Item
-            icon={<FaArchive />}
-            extra={<FaAngleRight />}
-            onClick={() => setKeys(['DRAFT'])}
-          >
-            Archiv
-          </Menu.Item>
-        )}
-        {!keys.length && (
-          <Menu.Item
-            icon={<FaTrashO />}
-            extra={<FaAngleRight />}
-            onClick={() => setKeys(['REMOVED'])}
-          >
-            Papierkorb
-          </Menu.Item>
-        )}
-        <Menu.Divider />
-        {menuItems.map(({ key, list, image, color, active, onClick }) => (
-          <Menu.Item
-            key={key}
-            onClick={onClick}
-            icon={!!image && <Image value={image} width={40} height={40} />}
-            active={active}
-            large={!!image}
-          >
-            {color ? <span style={{ color }}>{list.title}</span> : list.title}
-            {!!list.subtitle && <small>{list.subtitle}</small>}
-          </Menu.Item>
-        ))}
-      </Menu>
-    );
-  };
-
   render() {
-    const { collection, id, isLoading, keys, items, onClick } = this.props;
+    const {
+      collections,
+      selected,
+      states,
+      items,
+      date,
+      setDate,
+      onSelectCollection,
+      onSelectState
+    } = this.props;
+
+    console.log(this.props);
 
     return (
       <SecondarySidebar
         width={240}
         menu={
-          <StackedMenu
-            isLoading={isLoading}
-            keys={keys}
-            renderMenu={this.renderMenu}
-          />
+          <Menu>
+            <Calendar value={date} onChange={setDate} />
+
+            <Menu.Divider />
+
+            <Menu.Item
+              icon={<FaEye />}
+              onClick={e => onSelectState(e, 'PUBLISHED')}
+              active={states.includes('PUBLISHED')}
+            >
+              Veröffentlicht
+            </Menu.Item>
+            <Menu.Item
+              icon={<FaClockO />}
+              subtitle="Nur für Events"
+              onClick={e => onSelectState(e, 'EXPIRED')}
+              active={states.includes('EXPIRED')}
+            >
+              Abgelaufen
+            </Menu.Item>
+            <Menu.Item
+              icon={<FaArchive />}
+              onClick={e => onSelectState(e, 'DRAFT')}
+              active={states.includes('DRAFT')}
+            >
+              Archiv
+            </Menu.Item>
+            <Menu.Item
+              icon={<FaTrashO />}
+              onClick={e => onSelectState(e, 'REMOVED')}
+              active={states.includes('REMOVED')}
+            >
+              Papierkorb
+            </Menu.Item>
+
+            <Menu.Divider />
+
+            <div style={{ overflow: 'auto' }}>
+              {collections.map(c => (
+                <Menu.Item
+                  key={c.name}
+                  onClick={e => onSelectCollection(e, c.name)}
+                  icon={c.icon ? <Icon type={c.icon} /> : <FaCube />}
+                  active={selected.includes(c.name)}
+                  subtitle={!!get(c, 'mapping.event') && 'Event'}
+                >
+                  {c.label}
+                </Menu.Item>
+              ))}
+            </div>
+          </Menu>
         }
       >
-        <FlexContainer>
-          <Table {...this.props} />
-        </FlexContainer>
+        <Table
+          collections={collections.filter(c => selected.includes(c.name))}
+          states={states}
+          items={items}
+        />
 
-        <Drawer
+        {/* <Drawer
           layout="horizontal"
           collection={collection}
           onClose={() => onClick()}
-          item={items.find(x => x.id === id) || {}}
-        />
+          // item={items.find(x => x.id === id) || {}}
+        /> */}
       </SecondarySidebar>
     );
   }

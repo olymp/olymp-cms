@@ -1,20 +1,27 @@
 import React, { Component } from 'react';
 import { createComponent } from 'react-fela';
-import { Table, Input } from 'antd';
-import { uniq } from 'lodash';
+import { Table } from 'antd';
+import { intersection } from 'lodash';
 import { compose, withPropsOnChange, withState } from 'recompose';
-import isAfter from 'date-fns/isAfter';
+
+const STATE = {
+  PUBLISHED: 'Veröffentlicht',
+  EXPIRED: 'Abgelaufen',
+  ARCHIVED: 'Archiviert',
+  REMOVED: 'Gelöscht'
+};
 
 const StyledTable = createComponent(
   ({ theme }) => ({
+    height: '100%',
     borderLeft: `1px solid ${theme.dark4}`,
     '& .ant-table-thead > tr > th': {
       backgroundColor: '#F4F5F7'
     },
     '& thead > tr': {
-      height: 80,
+      // height: 80,
       '& th': {
-        fontSize: '115%',
+        // fontSize: '115%',
         fontWeight: 300
       }
     },
@@ -30,9 +37,9 @@ const StyledTable = createComponent(
   p => Object.keys(p)
 );
 
-const sortValue = (item, collection) => {
+/* const sortValue = (item, collection) => {
   console.log(item, collection);
-  /* if (item.name === (collection.specialFields.imageField || 'image' || 'bild'))
+  if (item.name === (collection.specialFields.imageField || 'image' || 'bild'))
     return 50;
 
   if (item.name === (collection.specialFields.nameField || 'name')) return 40;
@@ -48,7 +55,7 @@ const sortValue = (item, collection) => {
   if (item.name === (collection.specialFields.colorField || 'color' || 'farbe'))
     return 20;
 
-  return parseInt(item.specialFields.table, 10) || 10; */
+  return parseInt(item.specialFields.table, 10) || 10;
 };
 
 const getSorter = field =>
@@ -85,12 +92,12 @@ const getFilters = (items, field) => {
   }
 
   return undefined;
-};
+}; */
 
 const enhance = compose(
-  withState('activeFilter', 'setActiveFilter'),
+  // withState('activeFilter', 'setActiveFilter'),
   withState('filter', 'setFilter', {}),
-  withPropsOnChange(
+  /* withPropsOnChange(
     ['collection'],
     ({ collection }) =>
       console.log(collection) || {
@@ -105,7 +112,7 @@ const enhance = compose(
               dataIndex: name,
               // sorter: getSorter(field),
               // filters: getFilters(items, field),
-              /* filterDropdown: field.innerType.name === 'String' && (
+              filterDropdown: field.innerType.name === 'String' && (
               <Input
                 placeholder="Filter"
                 value={filter[field.name] ? filter[field.name] : ''}
@@ -118,27 +125,71 @@ const enhance = compose(
             filterDropdownVisible: activeFilter === field.name,
             onFilterDropdownVisibleChange: visible =>
               setActiveFilter(visible && field.name),
-            onFilter: (value, item) => item[field.name] === value, */
+            onFilter: (value, item) => item[field.name] === value,
               render: value => value
             };
           })
       }
-  ),
-  withPropsOnChange(['items', 'filter'], ({ items, filter }) => ({
-    data: items
-      .filter(item =>
-        Object.keys(filter).reduce(
-          (acc, key) =>
-            acc &&
-            item[key].toLowerCase().indexOf(filter[key].toLowerCase()) !== -1,
-          true
+  ), */
+  withPropsOnChange(
+    ['items', 'states', 'filter'],
+    ({ items, states, filter }) => ({
+      data: items
+        .filter(item => states.includes(item.state))
+        .filter(item =>
+          Object.keys(filter).reduce(
+            (acc, key) =>
+              acc &&
+              item[key].toLowerCase().indexOf(filter[key].toLowerCase()) !== -1,
+            true
+          )
         )
+        .map((item, i) => ({
+          key: i,
+          ...item
+        }))
+    })
+  ),
+  withPropsOnChange(['collections'], ({ collections, states }) => {
+    const columns = intersection(
+      ...collections.map(
+        collection => collection.columns || Object.keys(collection.fields)
       )
-      .map((item, i) => ({
-        key: i,
-        ...item
-      }))
-  }))
+    )
+      // .sort((a, b) => sortValue(b, collection) - sortValue(a, collection))
+      .map(fieldName => {
+        const name = fieldName.split('.')[0];
+
+        return {
+          key: name,
+          title: collections[0].fields[name].label,
+          dataIndex: name
+          // sorter: (a, b) => console.log(collections[0].fields[name], a, b)
+        };
+      });
+
+    if (states.length > 1) {
+      columns.push({
+        key: 'state',
+        title: 'Status',
+        dataIndex: 'state',
+        render: value => STATE[value]
+      });
+    }
+
+    if (collections.length > 1) {
+      columns.push({
+        key: 'type',
+        title: 'Collection',
+        dataIndex: 'type',
+        render: value => collections.find(c => c.name === value).label
+      });
+    }
+
+    return {
+      columns
+    };
+  })
 );
 
 @enhance
