@@ -37,6 +37,7 @@ require('olymp-webpack').dev([
       ALGOLIA_API_KEY: process.env.ALGOLIA_API_KEY,
       AUTH0_MANAGEMENT_CLIENT_ID: 'fRrvAhViv1QXxcWvxmUpLZJLPzEdQ5f8',
       CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
+      GOOGLE_MAPS_KEY: 'AIzaSyChCjr4BlKcoiFbaPcBGMa0Fwu3fAinFRY',
       AUTH0_MANAGEMENT_CLIENT_SECRET:
         process.env.AUTH0_MANAGEMENT_CLIENT_SECRET,
       ...env

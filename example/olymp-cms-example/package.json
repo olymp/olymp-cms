@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google/maps": "^0.4.5",
     "icon88": "^18.6.14",
     "immutable": "^3.8.2",
     "lodash": "^4.17.4",
