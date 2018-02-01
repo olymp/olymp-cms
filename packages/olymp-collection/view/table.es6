@@ -202,6 +202,10 @@ export default class CollectionView extends Component {
         columns={columns}
         dataSource={data}
         onRow={({ id }) => ({ onClick: () => onClick(id) })}
+        /* rowSelection={{
+          selectedRowKeys: [],
+          onChange: console.log
+        }} */
       />
     );
   }
