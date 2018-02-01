@@ -9,7 +9,7 @@ import { get } from 'lodash';
 import gql from 'graphql-tag';
 import { connect } from 'react-redux';
 import { plugin as apollo } from 'olymp-apollo';
-import { ScreenLoader } from 'olymp-ui';
+import { ScreenLoader, ColorsProvider } from 'olymp-ui';
 import {
   plugin as router,
   SwitchPathname,
@@ -18,6 +18,7 @@ import {
   withPathname
 } from 'olymp-router';
 import { plugin as fela, ThemeProvider } from 'olymp-fela';
+import withLocale from 'olymp-antd/de';
 import View from 'olymp-collection/view';
 import Mediathek from 'olymp-cloudinary/views';
 import Nav from './nav';
@@ -36,6 +37,7 @@ export const plugins = [
 
 // #3A1000
 const enhance = compose(
+  withLocale({}),
   getAuth,
   graphql(
     gql`
@@ -109,34 +111,39 @@ export default enhance(({ apps, pushPathname, app }) => (
       color: (app && app.color) || baseColor
     }}
   >
-    <Nav apps={apps}>
-      <Verifying />
-      <SwitchPathname key={apps.length}>
-        <Match match="/" exact render={null} />
-        <Match
-          match="/media"
-          exact
-          render={p => (
-            <Mediathek
-              id={p.id}
-              onClick={id =>
-                id ? pushPathname(`/media/${id}`) : pushPathname(`/media`)
-              }
-            />
-          )}
-        />
-
-        {apps.map(a => (
+    <ColorsProvider palette={7}>
+      <Nav apps={apps}>
+        <Verifying />
+        <SwitchPathname key={apps.length}>
+          <Match match="/" exact render={null} />
           <Match
-            key={a.name}
-            match={`/${a.name}/collections(/:collectionsString)`}
-            render={() => (
-              <View collections={[pageSchema, ...a.collections]} app={a.name} />
+            match="/media"
+            exact
+            render={p => (
+              <Mediathek
+                id={p.id}
+                onClick={id =>
+                  id ? pushPathname(`/media/${id}`) : pushPathname(`/media`)
+                }
+              />
             )}
           />
-        ))}
-        <Match component={Error} />
-      </SwitchPathname>
-    </Nav>
+
+          {apps.map(a => (
+            <Match
+              key={a.name}
+              match={`/${a.name}/collections(/:collectionsString)`}
+              render={() => (
+                <View
+                  collections={[pageSchema, ...a.collections]}
+                  app={a.name}
+                />
+              )}
+            />
+          ))}
+          <Match component={Error} />
+        </SwitchPathname>
+      </Nav>
+    </ColorsProvider>
   </ThemeProvider>
 ));
