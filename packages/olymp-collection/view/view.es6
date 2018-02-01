@@ -17,6 +17,7 @@ const enhance = compose(
   withRouting,
   withState('states', 'setStates', ['PUBLISHED']),
   withState('date', 'setDate', new Date()),
+  withState('edit', 'setEdit'),
   withPropsOnChange(['collectionsString'], ({ collectionsString }) => ({
     selected: collectionsString.split(',')
   })),
@@ -123,9 +124,12 @@ export default class CollectionView extends Component {
       items,
       date,
       setDate,
+      edit,
+      setEdit,
       onSelectCollection,
       onSelectState
     } = this.props;
+    const editItem = items.find(x => x.id === edit) || {};
 
     console.log(this.props);
 
@@ -190,14 +194,17 @@ export default class CollectionView extends Component {
           collections={collections.filter(c => selected.includes(c.name))}
           states={states}
           items={items}
+          onClick={id => setEdit(id)}
         />
 
-        {/* <Drawer
+        <Drawer
           layout="horizontal"
-          collection={collection}
-          onClose={() => onClick()}
-          // item={items.find(x => x.id === id) || {}}
-        /> */}
+          title={get(editItem, 'list.title')}
+          schema={collections.find(c => c.name === editItem.type) || {}}
+          value={editItem.raw || {}}
+          onChange={console.log}
+          onClose={() => setEdit()}
+        />
       </SecondarySidebar>
     );
   }
