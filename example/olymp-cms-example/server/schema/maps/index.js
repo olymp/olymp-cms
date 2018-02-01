@@ -23,31 +23,21 @@ export default (!maps
       partialMatch: Boolean
       types: [String]
     }
-    type PlaceAutoComplete {
+    type Place {
       description: String,
       id: String,
       placeId: String,
       reference: String
     }
     extend type Query {
-      place(placeId: String!): Geocode
       geocode(address: String!, region: String, language: String): Geocode
       geocodeList(address: String!, region: String, language: String): [Geocode]
-      places(input: String!, lat: Float, lng: Float, language: String): [PlaceAutoComplete]
+      place(placeId: String!): Geocode
+      places(input: String!, lat: Float, lng: Float, language: String): [Place]
     }
   `,
-      /*
-    extend type Query {
-      app(id: ID!): App
-      appList: [App]!
-    }
-    extend type Mutation {
-      app(data: AppInput!): App
-    }
-  */
       resolvers: {
         Query: {
-          place: (source, args) => maps.placeById(args.placeId),
           geocode: (source, args) =>
             maps
               .geocode({
@@ -60,12 +50,13 @@ export default (!maps
               ...args,
               components: { country: 'DE' }
             }),
-          places: (source, { lat, lng, language, ...args }) =>
+          place: (source, { placeId }) => maps.placeById(placeId),
+          places: (source, { lat, lng, language, input }) =>
             maps.placesAutoComplete({
-              ...args,
+              input,
               types: 'address',
-              language: language || 'de',
               components: { country: 'de' },
+              language: language || 'de',
               location:
                 lat !== undefined && lng !== undefined
                   ? `${lat},${lng}`

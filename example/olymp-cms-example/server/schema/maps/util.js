@@ -8,7 +8,7 @@ const convertGeocode = result => {
         .split('_')
         .map(
           (frag, i) =>
-            i > 0 ? `${frag[0].toUpperCase()}${frag.substr(1)}` : frag,
+            i > 0 ? `${frag[0].toUpperCase()}${frag.substr(1)}` : frag
         ) // eslint-disable-line
         .join('');
       newResult[newType] = component.long_name;
@@ -32,7 +32,7 @@ const convertGeocode = result => {
 export default key => {
   const googleMapsClient = maps.createClient({
     key,
-    Promise,
+    Promise
   });
   return {
     placeById: (id, { raw = false } = {}) =>
@@ -73,13 +73,13 @@ export default key => {
                   description,
                   id,
                   placeId: place_id,
-                  reference,
-                }),
-              ),
+                  reference
+                })
+              )
             );
           }
         });
-      }),
+      })
   };
 };
 
