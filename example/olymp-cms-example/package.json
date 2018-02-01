@@ -38,6 +38,7 @@
     "olymp-ui": "^20.1.25",
     "olymp-utils": "^19.1.14",
     "react": "^16.2.0",
+    "react-color": "^2.13.8",
     "react-dom": "^16.2.0",
     "react-dropbox-chooser": "0.0.5",
     "react-instantsearch": "^4.4.2",
