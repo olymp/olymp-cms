@@ -1,10 +1,10 @@
 import React from 'react';
-import { SecondarySidebar } from 'olymp-ui/menu/trio';
+import { Area } from 'olymp-ui/menu/layout';
 import { FaSearch } from 'icon88';
 import Menu from 'olymp-ui/menu';
 
 export default ({ searchCount, searchTerm, type, id, performSearch }) => (
-  <SecondarySidebar
+  <Area
     // width={term ? 600 : 400}
     menu={
       <Menu
@@ -21,5 +21,5 @@ export default ({ searchCount, searchTerm, type, id, performSearch }) => (
     hasContent={!!id}
   >
     Hi
-  </SecondarySidebar>
+  </Area>
 );

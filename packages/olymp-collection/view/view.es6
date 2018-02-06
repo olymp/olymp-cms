@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SecondarySidebar } from 'olymp-ui/menu/trio';
+import { Area } from 'olymp-ui/menu/layout';
 import Menu from 'olymp-ui/menu';
 import { FaCube, FaTrashO, FaArchive, FaClockO, FaEye } from 'olymp-icons';
 import { Icon } from 'antd';
@@ -134,7 +134,7 @@ export default class CollectionView extends Component {
     console.log(this.props);
 
     return (
-      <SecondarySidebar
+      <Area
         width={240}
         menu={
           <Menu>
@@ -205,7 +205,7 @@ export default class CollectionView extends Component {
           onChange={console.log}
           onClose={() => setEdit()}
         />
-      </SecondarySidebar>
+      </Area>
     );
   }
 }

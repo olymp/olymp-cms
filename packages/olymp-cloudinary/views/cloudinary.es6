@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withPropsOnChange, withState } from 'recompose';
 import { createComponent } from 'react-fela';
-import { SecondarySidebar } from 'olymp-ui/menu/trio';
+import { Area } from 'olymp-ui/menu/layout';
 import { Drawer } from 'olymp-ui';
 import Menu, { StackedMenu } from 'olymp-ui/menu';
 import { FaChevronLeft, FaPictureO } from 'olymp-icons';
@@ -320,7 +320,7 @@ class CloudinaryView extends Component {
       group && tag ? node.map[group].map[tag].items : node.items;
 
     return (
-      <SecondarySidebar
+      <Area
         width={240}
         menu={
           <StackedMenu
@@ -385,7 +385,7 @@ class CloudinaryView extends Component {
             </Menu>
           </Drawer>
         )}
-      </SecondarySidebar>
+      </Area>
     );
   }
 }

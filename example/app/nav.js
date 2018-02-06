@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import Menu from 'olymp-ui/menu';
 import {
   FaSearch,
@@ -12,14 +12,13 @@ import {
 } from 'icon88';
 import { Avatar } from 'olymp-ui';
 import { getAuth } from 'olymp-auth';
-import Sidebar from 'olymp-ui/menu/trio';
+import Layout from 'olymp-ui/menu/layout';
 import { compose, withState } from 'recompose';
 import { withRouting } from 'olymp-router';
 import Search from './search';
 import Logo from './logo';
 
 const enhance = compose(
-  withState('collapsed', 'setCollapsed', true),
   withState('searchText', 'setSearchText', null),
   getAuth,
   withRouting
@@ -29,8 +28,6 @@ export default enhance(
     login,
     logout,
     pushPathname,
-    collapsed = true,
-    setCollapsed,
     pathname = '',
     user,
     children,
@@ -38,18 +35,16 @@ export default enhance(
     setSearchText,
     apps
   }) => (
-    <Sidebar
-      collapsed={collapsed}
-      setCollapsed={setCollapsed}
+    <Layout
+      color
+      inverted
+      header={
+        <Menu.Item large icon={<Logo color="white" />}>
+          Manager
+        </Menu.Item>
+      }
       menu={
-        <Menu
-          color
-          inverted
-          header={
-            <Menu.Item large icon={<Logo color="white" />}>
-              Manager
-            </Menu.Item>
-          }
+        <Fragment
         >
           <Menu.Item
             active={pathname === '/'}
@@ -115,10 +110,7 @@ export default enhance(
           <Menu.Space />
 
           <Menu.Item
-            onClick={() => {
-              setSearchText('');
-              setCollapsed(true);
-            }}
+            onClick={() => setSearchText('')}
             icon={<FaSearch />}
           >
             Suche
@@ -147,7 +139,7 @@ export default enhance(
               Abmelden
             </Menu.Item>
           )}
-        </Menu>
+        </Fragment>
       }
     >
       {children}
