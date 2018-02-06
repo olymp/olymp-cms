@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import Menu from 'olymp-ui/menu';
 import {
   FaSearch,
@@ -44,8 +44,7 @@ export default enhance(
         </Menu.Item>
       }
       menu={
-        <Fragment
-        >
+        <Fragment>
           <Menu.Item
             active={pathname === '/'}
             icon={<FaCubes />}
@@ -109,10 +108,7 @@ export default enhance(
 
           <Menu.Space />
 
-          <Menu.Item
-            onClick={() => setSearchText('')}
-            icon={<FaSearch />}
-          >
+          <Menu.Item onClick={() => setSearchText('')} icon={<FaSearch />}>
             Suche
           </Menu.Item>
           {user && (
@@ -166,6 +162,6 @@ export default enhance(
           setSearchText(null);
         }}
       />
-    </Sidebar>
+    </Layout>
   )
 );
