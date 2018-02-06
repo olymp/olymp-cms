@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import Menu from 'olymp-ui/menu';
+import Menu, { Search } from 'olymp-ui/menu';
 import {
   FaSearch,
   FaPowerOff,
@@ -15,7 +15,6 @@ import { getAuth } from 'olymp-auth';
 import Layout from 'olymp-ui/menu/layout';
 import { compose, withState } from 'recompose';
 import { withRouting } from 'olymp-router';
-import Search from './search';
 import Logo from './logo';
 
 const enhance = compose(
@@ -36,15 +35,16 @@ export default enhance(
     apps
   }) => (
     <Layout
-      color
-      inverted
-      header={
-        <Menu.Item large icon={<Logo color="white" />}>
-          Olymp
-        </Menu.Item>
-      }
       menu={
-        <Fragment>
+        <Menu
+          color
+          inverted
+          header={
+            <Menu.Item large icon={<Logo color="white" />}>
+              Olymp
+            </Menu.Item>
+          }
+        >
           <Menu.Item
             active={pathname === '/'}
             icon={<FaCubes />}
@@ -142,7 +142,7 @@ export default enhance(
               Abmelden
             </Menu.Item>
           )}
-        </Fragment>
+        </Menu>
       }
     >
       {children}
@@ -152,7 +152,7 @@ export default enhance(
         onChange={setSearchText}
         open={searchText !== null && searchText !== undefined}
         header={
-          <Menu.Item large icon={<Logo color />} onClick={() => setQuery({})}>
+          <Menu.Item large icon={<Logo color />}>
             Olymp
           </Menu.Item>
         }
