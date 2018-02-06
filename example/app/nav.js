@@ -40,7 +40,7 @@ export default enhance(
       inverted
       header={
         <Menu.Item large icon={<Logo color="white" />}>
-          Manager
+          Olymp
         </Menu.Item>
       }
       menu={
@@ -74,37 +74,44 @@ export default enhance(
             Datenbank
           </Menu.Item>
 
-          <Menu.Divider />
+          {apps &&
+            !!apps.length && (
+              <Fragment>
+                <Menu.Divider />
 
-          <div style={{ overflow: 'auto' }}>
-            {apps.map(app => (
-              <Menu.List title={app.name} key={app.id} extra={<FaCog />}>
-                <Menu.Item
-                  active={pathname === `/${app.name}/page`}
-                  icon={<FaBook />}
-                  onClick={() => pushPathname(`/${app.name}/collections/page`)}
-                >
-                  Seiten
-                </Menu.Item>
-                {app.collections.map(collection => (
-                  <Menu.Item
-                    key={collection.name}
-                    active={pathname === '/'}
-                    icon={<FaBook />}
-                    onClick={() =>
-                      pushPathname(
-                        `/${app.name}/collections/${collection.name}`
-                      )
-                    }
-                  >
-                    {collection.label}
-                  </Menu.Item>
-                ))}
-              </Menu.List>
-            ))}
-          </div>
+                <div style={{ overflow: 'auto' }}>
+                  {apps.map(app => (
+                    <Menu.List title={app.name} key={app.id} extra={<FaCog />}>
+                      <Menu.Item
+                        active={pathname === `/${app.name}/page`}
+                        icon={<FaBook />}
+                        onClick={() =>
+                          pushPathname(`/${app.name}/collections/page`)
+                        }
+                      >
+                        Seiten
+                      </Menu.Item>
+                      {app.collections.map(collection => (
+                        <Menu.Item
+                          key={collection.name}
+                          active={pathname === '/'}
+                          icon={<FaBook />}
+                          onClick={() =>
+                            pushPathname(
+                              `/${app.name}/collections/${collection.name}`
+                            )
+                          }
+                        >
+                          {collection.label}
+                        </Menu.Item>
+                      ))}
+                    </Menu.List>
+                  ))}
+                </div>
 
-          <Menu.Divider />
+                <Menu.Divider />
+              </Fragment>
+            )}
 
           <Menu.Space />
 
@@ -146,7 +153,7 @@ export default enhance(
         open={searchText !== null && searchText !== undefined}
         header={
           <Menu.Item large icon={<Logo color />} onClick={() => setQuery({})}>
-            Diego <strong>ONE</strong>
+            Olymp
           </Menu.Item>
         }
         results={
