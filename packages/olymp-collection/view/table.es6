@@ -13,6 +13,7 @@ const STATE = {
 
 const StyledTable = createComponent(
   ({ theme }) => ({
+    width: '100%',
     height: '100%',
     borderLeft: `1px solid ${theme.dark4}`,
     '& .ant-table-thead > tr > th': {
