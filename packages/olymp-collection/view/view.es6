@@ -131,8 +131,6 @@ export default class CollectionView extends Component {
     } = this.props;
     const editItem = items.find(x => x.id === edit) || {};
 
-    console.log(this.props);
-
     return (
       <Area
         width={240}
@@ -200,10 +198,10 @@ export default class CollectionView extends Component {
         <Drawer
           layout="horizontal"
           title={get(editItem, 'list.title')}
-          schema={collections.find(c => c.name === editItem.type) || {}}
           value={editItem.raw || {}}
           onChange={console.log}
           onClose={() => setEdit()}
+          {...collections.find(c => c.name === editItem.type) || {}}
         />
       </Area>
     );
