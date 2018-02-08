@@ -129,7 +129,7 @@ export default class CollectionView extends Component {
       onSelectCollection,
       onSelectState
     } = this.props;
-    const editItem = items.find(x => x.id === edit) || {};
+    const type = get(edit, 'type');
 
     return (
       <Area
@@ -192,16 +192,16 @@ export default class CollectionView extends Component {
           collections={collections.filter(c => selected.includes(c.name))}
           states={states}
           items={items}
-          onClick={id => setEdit(id)}
+          onClick={id => setEdit(items.find(x => x.id === id).raw)}
         />
 
         <Drawer
           layout="horizontal"
-          title={get(editItem, 'list.title')}
-          value={editItem.raw || {}}
-          onChange={console.log}
+          title={get(items.find(i => i.id === get(edit, 'id')), 'list.title')}
+          value={edit}
+          onChange={changes => setEdit({ ...edit, ...changes })}
           onClose={() => setEdit()}
-          {...collections.find(c => c.name === editItem.type) || {}}
+          {...collections.find(c => c.name === type) || {}}
         />
       </Area>
     );
