@@ -135,7 +135,7 @@ export default class CollectionView extends Component {
         width={240}
         menu={
           <Menu>
-            <Calendar value={date} onChange={setDate} />
+            <Calendar value={date} onChange={setDate} arrows />
 
             <Menu.Divider />
 
